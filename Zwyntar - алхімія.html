@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zwyntar — алхімія</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Ruslan+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --swamp:#0d1210; --peat:#151c18; --stone:#2a332c; --bone:#ddd5bf; --ash:#a09a84;
+  --blood:#a8261f; --ember:#d4533f; --moss:#7a9a5e; --brass:#c19a45; --lead:#070908;
+  --display:"Ruslan Display","Palatino Linotype",Palatino,Georgia,serif;
+  --text:"EB Garamond","Iowan Old Style",Palatino,Georgia,serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--swamp)}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;background:var(--swamp);color:var(--bone);
+  font:400 1.18rem/1.6 var(--text);font-variant-numeric:oldstyle-nums;
+  background-image:
+    radial-gradient(1000px 800px at 20% 8%,rgba(168,38,31,.13),transparent 70%),
+    radial-gradient(900px 700px at 92% 55%,rgba(122,154,94,.06),transparent 70%),
+    linear-gradient(var(--swamp),#090c0b);
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.07;mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(18px,4vw,48px)}
+header.hero{padding-top:clamp(28px,6vw,64px)}
+.mark{font-family:var(--display);font-size:1.5rem;color:var(--ember)}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;color:var(--bone)}
+h1{font-size:clamp(3.4rem,11vw,9rem);margin:.12em 0 .2em;text-shadow:0 0 44px rgba(168,38,31,.38)}
+h2{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:.35em}
+p{margin:0 0 1em}
+.lede{max-width:62ch}
+section{padding:clamp(52px,8vw,110px) 0 0}
+section .wrap > p{max-width:66ch;color:var(--ash)}
+section .wrap > p b{color:var(--bone);font-weight:500}
+.cap{font-size:.95rem;color:var(--ash);font-style:italic;margin:.4em 0 0;max-width:80ch}
+.formula{margin:1.1em 0 .4em;padding:.7em 1.1em;max-width:66ch;border-left:2px solid var(--blood);background:rgba(221,213,191,.035);
+  font-style:italic;color:var(--bone);font-size:1.12rem;line-height:1.75;overflow-x:auto}
+.formula sub,.formula sup{font-size:.72em;line-height:0}
+.field{position:relative;overflow-x:auto;overflow-y:hidden;margin-top:10px;-webkit-overflow-scrolling:touch;scrollbar-color:var(--stone) transparent}
+.field svg{display:block;width:100%;height:auto;min-width:1040px}
+.swipe{display:none}
+@media (max-width:1100px){.swipe{display:block}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 28px;margin:16px 0 0;padding:0;list-style:none;color:var(--ash);font-size:1rem}
+.legend li{display:flex;align-items:center;gap:10px}
+.legend i{width:13px;height:13px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px var(--lead) inset,0 0 0 1px rgba(221,213,191,.3)}
+.legend i.dash{border-radius:0;background:none;box-shadow:none;height:0;width:22px;border-top:2px dashed var(--c)}
+
+/* перша секція: графік + скрижаль */
+.duo{display:grid;grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;margin-top:18px}
+@media (max-width:900px){.duo{grid-template-columns:1fr}}
+.duo svg{display:block;width:100%;height:auto;max-width:640px}
+.tablet{margin:0;padding:clamp(18px,3vw,34px);background:linear-gradient(160deg,#1c241f,#101612);border:1px solid rgba(221,213,191,.16);
+  box-shadow:inset 0 0 0 5px #0d1210,inset 0 0 0 6px rgba(221,213,191,.1),0 18px 50px rgba(0,0,0,.45);border-radius:2px 2px 2px 2px}
+.tablet div{display:grid;grid-template-columns:minmax(5.5rem,auto) 1fr;gap:4px 18px;align-items:baseline;padding:13px 0;border-bottom:1px solid rgba(221,213,191,.1)}
+.tablet div:last-child{border-bottom:0}
+.tablet dt{font:400 2.1rem/1 var(--display);color:var(--ember);white-space:nowrap}
+.tablet dd{margin:0;color:var(--ash);font-size:1.02rem;line-height:1.4}
+.tablet dd b{color:var(--bone);font-weight:500}
+
+/* спільні осі */
+.axis text{font:400 15px var(--text);fill:var(--ash);font-variant-numeric:oldstyle-nums}
+.axis line{stroke:rgba(221,213,191,.09)}
+.axt{font:italic 400 14.5px var(--text);fill:var(--ash)}
+.note{font:italic 400 15px var(--text);fill:var(--bone);paint-order:stroke;stroke:#0d1210;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.big{font:400 40px var(--display);fill:var(--ember);paint-order:stroke;stroke:#0d1210;stroke-width:5px;pointer-events:none}
+.big2{font:italic 400 16px var(--text);fill:var(--ash);pointer-events:none}
+.pt{cursor:pointer;outline:none;transition:filter .25s,opacity .25s}
+.pt.on,.pt:focus-visible{filter:drop-shadow(0 0 8px rgba(212,83,63,.9))}
+.dim .pt:not(.on){opacity:.3}
+
+/* кістки */
+.dice-bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:14px 0 0}
+button.roll{font:400 1.05rem var(--text);color:var(--bone);background:transparent;border:1px solid rgba(221,213,191,.38);padding:.55em 1.2em;border-radius:2px;cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s}
+button.roll:hover,button.roll:focus-visible{border-color:var(--ember);color:var(--ember);background:rgba(212,83,63,.07);outline:none}
+button.roll:disabled{opacity:.5;cursor:default}
+.prog{color:var(--ash);font-style:italic;font-size:1rem;min-width:18ch}
+.verdict{margin-top:1em;max-width:66ch;color:var(--bone)}
+.verdict b{color:var(--ember);font-weight:500}
+
+/* матриця */
+.cell{cursor:default;outline:none}
+.cell rect.f{transition:filter .2s}
+.cell:hover rect.f,.cell.on rect.f,.cell:focus-visible rect.f{filter:brightness(1.35)}
+.cv{font:500 22px var(--text);fill:var(--bone);text-anchor:middle;font-variant-numeric:oldstyle-nums;pointer-events:none}
+.cl{font:400 18px var(--text);fill:var(--bone);pointer-events:none}
+
+/* підказка */
+#tip{position:fixed;z-index:20;left:0;top:0;max-width:320px;pointer-events:none;
+  background:rgba(13,18,16,.96);border:1px solid rgba(221,213,191,.22);border-radius:2px;
+  padding:12px 15px 11px;box-shadow:0 10px 40px rgba(0,0,0,.65),0 0 0 1px #000;font-size:1.02rem;line-height:1.4}
+#tip[hidden]{display:none}
+#tip .tn{font-family:var(--display);font-size:1.3rem;line-height:1.15;color:var(--bone);margin-bottom:3px}
+#tip .tk{color:var(--ash);font-style:italic;margin-bottom:6px}
+#tip .trw{display:flex;justify-content:space-between;gap:18px}
+#tip .trw span:first-child{color:var(--ash)}
+footer{padding:clamp(56px,8vw,96px) 0 56px;color:var(--ash);font-size:1rem}
+footer .wrap{border-top:1px solid rgba(221,213,191,.14);padding-top:22px}
+footer p{max-width:84ch;margin-bottom:.5em}
+a{color:inherit}
+@media (prefers-reduced-motion:reduce){.pt,.cell rect.f,button.roll{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="g-rec" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#e86a52"/><stop offset=".5" stop-color="#a8261f"/><stop offset="1" stop-color="#4a0f0c"/></radialGradient>
+    <radialGradient id="g-vid" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#ecca80"/><stop offset=".5" stop-color="#b8923f"/><stop offset="1" stop-color="#4a350f"/></radialGradient>
+    <radialGradient id="g-live" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#b0cf92"/><stop offset=".5" stop-color="#6f8f55"/><stop offset="1" stop-color="#1f3016"/></radialGradient>
+    <linearGradient id="woundG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4533f" stop-opacity=".62"/><stop offset="1" stop-color="#4a0f0c" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="barG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5a1411"/><stop offset=".5" stop-color="#c13a2b"/><stop offset="1" stop-color="#5a1411"/></linearGradient>
+  </defs>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="mark">Zwyntar</div>
+    <h1>Алхімія</h1>
+    <p class="lede">П’ять розрахунків над одним файлом із 48 відео: нерівність переглядів, закон Ципфа, довірчі інтервали, тест на кістках і кореляції. Усі числа рахує сама сторінка, наведіть курсор на графік, щоб побачити значення.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="duo">
+    <svg id="lorenz" viewBox="0 0 640 640" role="group" aria-label="Крива Лоренца для переглядів"></svg>
+    <dl class="tablet" id="tablet"></dl>
+  </div>
+  <p class="cap" id="lorCap" style="margin-top:1.4em"></p>
+  <div class="formula" id="lorF"></div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Закон Ципфа</h2>
+    <p id="zipP"></p>
+    <div class="formula" id="zipF"></div>
+    <ul class="legend">
+      <li><i style="--c:#d4533f"></i>запис</li>
+      <li><i style="--c:#c19a45"></i>відео</li>
+      <li><i style="--c:#7a9a5e"></i>концерт</li>
+      <li><i class="dash" style="--c:#ddd5bf"></i>лінія регресії</li>
+    </ul>
+  </div>
+  <div class="field"><svg id="zipf" viewBox="0 0 1240 560" role="group" aria-label="Ранг і перегляди в логарифмічних координатах"></svg></div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Свічки невпевненості</h2>
+    <p id="wilP"></p>
+    <div class="formula" id="wilF"></div>
+    <p class="cap swipe">Поле ширше за екран — гортайте його вбік.</p>
+  </div>
+  <div class="field"><svg id="candles" viewBox="0 0 1240 540" role="group" aria-label="Відсоток лайків з інтервалами Вілсона для кожного відео"></svg></div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Кістки</h2>
+    <p id="diceP"></p>
+    <div class="formula" id="diceF"></div>
+    <div class="dice-bar"><button class="roll" id="roll" type="button">Кинути кістки ще раз</button><span class="prog" id="prog" aria-live="polite"></span></div>
+  </div>
+  <div class="field"><svg id="dice" viewBox="0 0 1240 440" role="group" aria-label="Розподіл різниці медіан після випадкових перестановок міток"></svg></div>
+  <div class="wrap"><p class="verdict" id="verdict"></p></div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Скляна сітка</h2>
+    <p id="matP"></p>
+    <div class="formula" id="matF"></div>
+  </div>
+  <div class="field"><svg id="matrix" viewBox="0 0 1240 560" role="group" aria-label="Кореляційна матриця: Пірсон над діагоналлю, Спірмен під нею"></svg></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Дані: YouTube Data API v3, канал Zwyntar, зібрано 10.10.2026, 48 відео. Усі розрахунки виконано на цій сторінці з тих самих 48 рядків аркуша «Пісні»; вік відео — дні від публікації до 10.10.2026.</p>
+    <p>Обмеження. Інтервали Вілсона вважають кожен перегляд незалежною спробою лайка, а це спрощення. Інтервал нахилу Ципфа оптимістичний, бо точки впорядковані за рангом. Перестановковий тест припускає, що мітки типу взаємозамінні, а кореляція не доводить причинності.</p>
+    <p>Тип відео — запис, відео чи концерт — визначено за назвою та джерелом, а не з даних YouTube.</p>
+  </div>
+</footer>
+
+<div id="tip" role="tooltip" hidden></div>
+
+<script>const DATA = {"vids": [{"id": "JavVTOm8UEw", "name": "На болоті", "kind": "rec", "date": "2017-07-17", "views": 656978, "likes": 10121, "comments": 329, "dur": 324, "note": "Official Audio"}, {"id": "VGt4LKItp4s", "name": "Танцюй і пий", "kind": "rec", "date": "2017-08-16", "views": 446029, "likes": 7321, "comments": 142, "dur": 271, "note": "Official Audio"}, {"id": "07AXr1d2mS8", "name": "Гріх", "kind": "rec", "date": "2017-08-16", "views": 57833, "likes": 1214, "comments": 21, "dur": 334, "note": "Official Audio"}, {"id": "X2O5tRezEgU", "name": "Ти не Бог", "kind": "rec", "date": "2017-08-16", "views": 210934, "likes": 3633, "comments": 71, "dur": 248, "note": "Official Audio"}, {"id": "KnSsmBpBdvM", "name": "Микола", "kind": "rec", "date": "2017-08-16", "views": 665995, "likes": 11909, "comments": 262, "dur": 264, "note": "Official Audio"}, {"id": "sJI1KBoOGHs", "name": "Мексиканець", "kind": "live", "date": "2017-11-18", "views": 389991, "likes": 9488, "comments": 432, "dur": 259, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "qCg7eItfVSM", "name": "На болоті", "kind": "live", "date": "2017-11-22", "views": 48345, "likes": 1390, "comments": 56, "dur": 307, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "CpSEoH05TFE", "name": "Ти не Бог", "kind": "live", "date": "2017-11-22", "views": 17536, "likes": 473, "comments": 12, "dur": 221, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "GOSHyD4e2kE", "name": "Танцюй і пий", "kind": "live", "date": "2017-12-01", "views": 41021, "likes": 1172, "comments": 36, "dur": 260, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "vjrzFvMuyG4", "name": "Павуки (cover King Dude)", "kind": "live", "date": "2017-12-01", "views": 45050, "likes": 1134, "comments": 50, "dur": 171, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "lgnunQvx5-k", "name": "Човен", "kind": "live", "date": "2017-12-01", "views": 109883, "likes": 3562, "comments": 193, "dur": 314, "note": "Live · Halloween Horror Night 2017, Bingo"}, {"id": "eP1BNFCLQZ0", "name": "Мертві голоси", "kind": "rec", "date": "2018-12-13", "views": 528982, "likes": 4215, "comments": 30, "dur": 235, "note": "Запис із релізу"}, {"id": "kOssw3pCTXo", "name": "Півні", "kind": "rec", "date": "2018-12-13", "views": 1148821, "likes": 10073, "comments": 70, "dur": 198, "note": "Запис із релізу"}, {"id": "kHm0yl_PbEc", "name": "Мої сестри — відьми", "kind": "rec", "date": "2018-12-13", "views": 979832, "likes": 7368, "comments": 36, "dur": 232, "note": "Запис із релізу"}, {"id": "yRVO6fh92OU", "name": "Мексиканець", "kind": "rec", "date": "2018-12-13", "views": 15768741, "likes": 133636, "comments": 1753, "dur": 237, "note": "Запис із релізу"}, {"id": "qRHOOubXnLI", "name": "Микола", "kind": "rec", "date": "2018-12-13", "views": 1863692, "likes": 21749, "comments": 138, "dur": 264, "note": "Запис із релізу"}, {"id": "LZlGfBjfDrY", "name": "На болоті", "kind": "rec", "date": "2018-12-13", "views": 853032, "likes": 6727, "comments": 50, "dur": 324, "note": "Запис із релізу"}, {"id": "ApH-OPjcufg", "name": "Човен", "kind": "vid", "date": "2019-01-29", "views": 2841805, "likes": 45022, "comments": 2170, "dur": 315, "note": "Lyrics video"}, {"id": "8L1-Nrm-Pqw", "name": "Джонні", "kind": "vid", "date": "2019-09-02", "views": 220655, "likes": 4706, "comments": 167, "dur": 228, "note": "Lyrics video"}, {"id": "eBIzxqwHg7A", "name": "Кажани (тизер)", "kind": "vid", "date": "2019-11-20", "views": 3583, "likes": 138, "comments": 6, "dur": 10, "note": "Тизер"}, {"id": "HZYwV-y4OlI", "name": "Кажани", "kind": "vid", "date": "2020-02-14", "views": 462051, "likes": 11892, "comments": 446, "dur": 285, "note": "Відео"}, {"id": "FYwtroulTeg", "name": "Дівча", "kind": "vid", "date": "2021-06-17", "views": 337982, "likes": 8215, "comments": 476, "dur": 212, "note": "Lyrics video"}, {"id": "eDNmgmwrXlc", "name": "Маленька церква (трибут Disco Elysium)", "kind": "vid", "date": "2021-08-31", "views": 38381, "likes": 2228, "comments": 130, "dur": 150, "note": "Відео"}, {"id": "Ub59pDJTpu0", "name": "Янголе небесний", "kind": "rec", "date": "2021-10-29", "views": 58906, "likes": 2586, "comments": 284, "dur": 227, "note": "Official Audio"}, {"id": "pIvVTkQfrK0", "name": "Янголе небесний", "kind": "vid", "date": "2022-01-21", "views": 330124, "likes": 9929, "comments": 565, "dur": 268, "note": "Official video"}, {"id": "Ujq3pNP0J-M", "name": "Госпел", "kind": "vid", "date": "2022-02-27", "views": 296843, "likes": 9168, "comments": 295, "dur": 218, "note": "Відео"}, {"id": "1B4AxahyQJQ", "name": "Диявол входить у місто", "kind": "rec", "date": "2022-10-31", "views": 323589, "likes": 8507, "comments": 403, "dur": 220, "note": "Official Audio"}, {"id": "0Q1hW9ufNZg", "name": "Білим снігом", "kind": "rec", "date": "2023-02-27", "views": 1470517, "likes": 14920, "comments": 265, "dur": 244, "note": "Запис із релізу"}, {"id": "AuFxE7rePVA", "name": "Муншайн", "kind": "vid", "date": "2023-08-11", "views": 830878, "likes": 12732, "comments": 370, "dur": 191, "note": "Lyrics video"}, {"id": "aes01FbEVMw", "name": "Трясовина", "kind": "rec", "date": "2023-10-12", "views": 2186719, "likes": 17388, "comments": 182, "dur": 258, "note": "Запис із релізу"}, {"id": "1zjlqjr0TvQ", "name": "Погана кров", "kind": "rec", "date": "2023-10-12", "views": 658187, "likes": 6382, "comments": 49, "dur": 189, "note": "Запис із релізу"}, {"id": "6GWH2j-nwEk", "name": "Мати Темрява", "kind": "rec", "date": "2023-10-12", "views": 488967, "likes": 4415, "comments": 69, "dur": 326, "note": "Запис із релізу"}, {"id": "Ej_QqhpWyfM", "name": "Ящірка", "kind": "rec", "date": "2023-10-12", "views": 176708, "likes": 1909, "comments": 43, "dur": 325, "note": "Запис із релізу"}, {"id": "FoHQ5LdfcDM", "name": "Інтродукція. Кам’яна могила", "kind": "rec", "date": "2023-10-12", "views": 267074, "likes": 3615, "comments": 62, "dur": 210, "note": "Запис із релізу"}, {"id": "B3ua2ysGIp0", "name": "Білим снігом", "kind": "rec", "date": "2023-10-12", "views": 353522, "likes": 3189, "comments": 32, "dur": 243, "note": "Запис із релізу"}, {"id": "VtiaROx6_18", "name": "Диявол входить у місто", "kind": "rec", "date": "2023-10-12", "views": 468259, "likes": 3501, "comments": 20, "dur": 220, "note": "Запис із релізу"}, {"id": "thgS-xotBrk", "name": "Белла", "kind": "rec", "date": "2023-10-12", "views": 369330, "likes": 2912, "comments": 35, "dur": 255, "note": "Запис із релізу"}, {"id": "yFqmPp22zxo", "name": "Танцюй і пий", "kind": "live", "date": "2023-11-10", "views": 36152, "likes": 1757, "comments": 97, "dur": 304, "note": "Live · Bel Etage, Київ, 21.04.2023"}, {"id": "H12Hinx05ro", "name": "Чорне дерево", "kind": "vid", "date": "2023-12-07", "views": 161174, "likes": 5774, "comments": 223, "dur": 205, "note": "Анімаційне відео"}, {"id": "Pr8N75sp584", "name": "Микола", "kind": "live", "date": "2024-03-13", "views": 132015, "likes": 3477, "comments": 140, "dur": 230, "note": "Live · Bel Etage, Київ, 21.04.2023"}, {"id": "DYlnJuVRld0", "name": "Погана кров", "kind": "live", "date": "2024-04-15", "views": 54485, "likes": 2339, "comments": 71, "dur": 220, "note": "360° live · Atlas, Київ, 29.10.2023"}, {"id": "MkKR2aB-Xi8", "name": "Не довіряй смертним", "kind": "rec", "date": "2024-10-30", "views": 721747, "likes": 12397, "comments": 393, "dur": 269, "note": "Official Audio"}, {"id": "7OCnaLVGNaU", "name": "Золото і блакить", "kind": "vid", "date": "2024-11-18", "views": 955695, "likes": 22852, "comments": 891, "dur": 236, "note": "з Третьою штурмовою · проєкт «Епоха»"}, {"id": "r_Kg-S_Qin0", "name": "Потяг на південь", "kind": "rec", "date": "2025-05-29", "views": 3892458, "likes": 33344, "comments": 558, "dur": 207, "note": "Запис із релізу"}, {"id": "VRVVgpMTIz0", "name": "Червона ріка", "kind": "rec", "date": "2025-05-29", "views": 473155, "likes": 5334, "comments": 132, "dur": 367, "note": "Запис із релізу"}, {"id": "ADejqB0jpig", "name": "Чоловік у чорному", "kind": "rec", "date": "2025-05-29", "views": 528794, "likes": 4421, "comments": 49, "dur": 310, "note": "Запис із релізу"}, {"id": "to17zYCFFIU", "name": "Кажани 1983", "kind": "vid", "date": "2025-10-23", "views": 35040, "likes": 2148, "comments": 116, "dur": 258, "note": "Lyrics video"}, {"id": "CQBKLsZrfys", "name": "Ніч упаде", "kind": "vid", "date": "2026-03-27", "views": 281479, "likes": 6756, "comments": 249, "dur": 235, "note": "Official video"}]};</script>
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in (a||{}))e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const nf=new Intl.NumberFormat("uk-UA");
+const fx=(x,d=2)=>(Math.abs(x)<Math.pow(10,-d)/2?0:x).toFixed(d).replace(".",",").replace("-","−");
+const compact=v=>v>=1e6?fx(v/1e6,1)+" млн":v>=1e3?Math.round(v/1e3)+" тис.":String(Math.round(v));
+const pl=(n,f)=>{const a=n%10,b=n%100;return f[(a===1&&b!==11)?0:(a>=2&&a<=4&&(b<10||b>=20))?1:2]};
+const fdate=d=>new Date(d+"T00:00:00Z").toLocaleDateString("uk-UA",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"});
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const touch=matchMedia("(hover: none)").matches;
+const KIND={rec:{n:"запис",c:"#d4533f"},vid:{n:"відео",c:"#c19a45"},live:{n:"концерт",c:"#7a9a5e"}};
+
+/* ---------- статистична бібліотечка ---------- */
+const sum=(a,f)=>a.reduce((s,x)=>s+(f?f(x):x),0);
+const mean=a=>sum(a)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(sum(a,x=>(x-m)*(x-m))/(a.length-1))};
+const median=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const gini=a=>{const s=[...a].sort((x,y)=>x-y),n=s.length,S=sum(s);let w=0;s.forEach((x,i)=>w+=(i+1)*x);return 2*w/(n*S)-(n+1)/n};
+const lorenz=a=>{const s=[...a].sort((x,y)=>x-y),S=sum(s);let c=0;const p=[[0,0]];s.forEach((x,i)=>{c+=x;p.push([(i+1)/s.length,c/S])});return p};
+const ols=(x,y)=>{const n=x.length,mx=mean(x),my=mean(y);let sxx=0,sxy=0,syy=0;
+  for(let i=0;i<n;i++){sxx+=(x[i]-mx)**2;sxy+=(x[i]-mx)*(y[i]-my);syy+=(y[i]-my)**2}
+  const b=sxy/sxx,a=my-b*mx,r=sxy/Math.sqrt(sxx*syy),sse=syy-b*sxy;
+  return {n,a,b,r,R2:r*r,se:Math.sqrt(sse/(n-2)/sxx)}};
+const tcrit=df=>{const z=1.959964;return z+(z**3+z)/(4*df)+(5*z**5+16*z**3+3*z)/(96*df*df)+(3*z**7+19*z**5+17*z**3-15*z)/(384*df**3)};
+const ranks=a=>{const idx=a.map((v,i)=>[v,i]).sort((p,q)=>p[0]-q[0]),r=new Array(a.length);let i=0;
+  while(i<idx.length){let j=i;while(j+1<idx.length&&idx[j+1][0]===idx[i][0])j++;const avg=(i+j)/2+1;for(let k=i;k<=j;k++)r[idx[k][1]]=avg;i=j+1}return r};
+const pearson=(x,y)=>ols(x,y).r;
+const spearman=(x,y)=>pearson(ranks(x),ranks(y));
+const wilson=(k,n,z=1.959964)=>{const p=k/n,d=1+z*z/n,c=p+z*z/(2*n),h=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n));return [(c-h)/d,(c+h)/d]};
+const mulberry=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+
+/* ---------- дані ---------- */
+const REF=Date.UTC(2026,9,10);
+const V=DATA.vids.map(v=>Object.assign({},v,{days:Math.max(1,Math.round((REF-Date.parse(v.date))/864e5))}));
+V.forEach(v=>{v.lr=v.likes/v.views*100});
+const views=V.map(v=>v.views),TOTAL=sum(views),N=V.length;
+const songKey=v=>v.name.replace(/\s*\(тизер\)/,"").toLowerCase();
+const sg={};V.forEach(v=>sg[songKey(v)]=(sg[songKey(v)]||0)+v.views);
+const songViews=Object.values(sg);
+
+/* ---------- підказка ---------- */
+const tip=$("tip");
+const tipHTML=o=>{let h='<div class="tn">'+o.title+'</div>';if(o.sub)h+='<div class="tk">'+o.sub+'</div>';
+  o.rows.forEach(r=>{h+='<div class="trw"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>'});return h};
+function placeTip(x,y){const w=tip.offsetWidth,h=tip.offsetHeight,m=12;let l=x+18,t=y+18;
+  if(l+w>innerWidth-m)l=x-w-18;if(l<m)l=m;if(t+h>innerHeight-m)t=y-h-18;if(t<m)t=m;
+  tip.style.transform="translate("+Math.round(l)+"px,"+Math.round(t)+"px)"}
+function showTip(o,x,y){tip.innerHTML=tipHTML(o);tip.hidden=false;placeTip(x,y)}
+function hideTip(){tip.hidden=true}
+function bind(node,getInfo,onOn,onOff){
+  let owner=false;
+  const on=(x,y)=>{owner=true;onOn&&onOn();showTip(getInfo(),x,y)};
+  node.addEventListener("pointerenter",e=>{if(e.pointerType==="touch")return;on(e.clientX,e.clientY)});
+  node.addEventListener("pointermove",e=>{if(owner&&!tip.hidden)placeTip(e.clientX,e.clientY)});
+  node.addEventListener("pointerleave",()=>{owner=false;onOff&&onOff();hideTip()});
+  node.addEventListener("focus",()=>{const r=node.getBoundingClientRect();on(r.left+r.width/2,r.top+r.height/2)});
+  node.addEventListener("blur",()=>{owner=false;onOff&&onOff();hideTip()});
+  if(touch)node.addEventListener("click",()=>{const r=node.getBoundingClientRect();on(r.left+r.width/2,r.top+r.height/2)});
+}
+const ptr=(svg,ev)=>{const p=svg.createSVGPoint();p.x=ev.clientX;p.y=ev.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())};
+
+/* ====================== 1. ЛОРЕНЦ ====================== */
+(function(){
+  const svg=$("lorenz"),S=640,L=78,B=62,T=26,R=26,PW=S-L-R,PH=S-T-B;
+  const X=p=>L+p*PW,Y=q=>T+(1-q)*PH;
+  const ax=el("g",{class:"axis"},svg);
+  for(let i=0;i<=5;i++){const v=i/5;
+    el("line",{x1:X(v),x2:X(v),y1:T,y2:T+PH},ax);el("line",{x1:L,x2:L+PW,y1:Y(v),y2:Y(v)},ax);
+    const a=el("text",{x:X(v),y:T+PH+24,"text-anchor":"middle"},ax);a.textContent=Math.round(v*100)+" %";
+    const b=el("text",{x:L-12,y:Y(v)+5,"text-anchor":"end"},ax);b.textContent=Math.round(v*100)+" %";}
+  el("rect",{x:L,y:T,width:PW,height:PH,fill:"none",stroke:"rgba(221,213,191,.35)"},svg);
+  const xl=el("text",{class:"axt",x:L+PW/2,y:S-12,"text-anchor":"middle"},svg);xl.textContent="частка відео, від найменш популярних";
+  const yl=el("text",{class:"axt",transform:"translate(18,"+(T+PH/2)+") rotate(-90)","text-anchor":"middle"},svg);yl.textContent="частка переглядів";
+  const pts=lorenz(views),G=gini(views),ps=lorenz(songViews),GS=gini(songViews);
+  const path=q=>q.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ");
+  el("path",{d:path(pts)+"Z",fill:"url(#woundG)"},svg);
+  el("line",{x1:X(0),y1:Y(0),x2:X(1),y2:Y(1),stroke:"rgba(221,213,191,.6)","stroke-dasharray":"3 7","stroke-width":1.4},svg);
+  el("path",{d:path(ps),fill:"none",stroke:"#c19a45","stroke-width":1.8,"stroke-dasharray":"7 5"},svg);
+  el("path",{d:path(pts),fill:"none",stroke:"#d4533f","stroke-width":3,"stroke-linejoin":"round"},svg);
+  /* 20 % найпопулярніших */
+  const k=Math.round(N*.2),pk=(N-k)/N,qk=pts[N-k][1],top20=1-qk;
+  el("circle",{cx:X(pk),cy:Y(qk),r:7,fill:"url(#g-rec)",stroke:"#070908","stroke-width":1.6},svg);
+  const t1=el("text",{class:"note",x:X(pk)-14,y:Y(qk)-36,"text-anchor":"end"},svg);t1.textContent="найпопулярніші "+k+" відео ("+Math.round(k/N*100)+" %)";
+  const t2=el("text",{class:"note",x:X(pk)-14,y:Y(qk)-16,"text-anchor":"end"},svg);t2.textContent="мають "+Math.round(top20*100)+" % переглядів";
+  const eq=el("text",{class:"axt",x:X(.5)+8,y:Y(.5)+26,transform:"rotate(-45 "+(X(.5)+8)+" "+(Y(.5)+26)+")","text-anchor":"middle",style:"font-size:13.5px"},svg);eq.textContent="лінія рівності";
+  /* перехрестя */
+  const cg=el("g",{"pointer-events":"none",opacity:0},svg);
+  const vl=el("line",{y1:T,y2:T+PH,stroke:"#d4533f","stroke-width":1},cg),hl=el("line",{x1:L,x2:L+PW,stroke:"#d4533f","stroke-width":1},cg);
+  const dot=el("circle",{r:5,fill:"#d4533f"},cg);
+  const hit=el("rect",{x:L,y:T,width:PW,height:PH,fill:"transparent",style:"cursor:crosshair"},svg);
+  const Lat=p=>{const f=p*N,i=Math.min(N-1,Math.floor(f));return pts[i][1]+(pts[i+1][1]-pts[i][1])*(f-i)};
+  const upd=ev=>{const m=ptr(svg,ev);let p=(m.x-L)/PW;p=Math.max(0,Math.min(1,p));const q=Lat(p);
+    vl.setAttribute("x1",X(p));vl.setAttribute("x2",X(p));hl.setAttribute("y1",Y(q));hl.setAttribute("y2",Y(q));dot.setAttribute("cx",X(p));dot.setAttribute("cy",Y(q));cg.setAttribute("opacity",1);
+    showTip({title:"Нижні "+Math.round(p*100)+" % відео",rows:[["мають переглядів",fx(q*100,1)+" %"],["за рівності було б",Math.round(p*100)+" %"],["кількість відео","≈ "+Math.round(p*N)]]},ev.clientX,ev.clientY)};
+  hit.addEventListener("pointermove",upd);hit.addEventListener("pointerenter",upd);
+  hit.addEventListener("pointerleave",()=>{cg.setAttribute("opacity",0);hideTip()});
+
+  /* скрижаль */
+  const hhi=sum(views,v=>(v/TOTAL)**2),neff=1/hhi;
+  const sorted=[...views].sort((a,b)=>b-a);let c=0,k80=0;for(;k80<N&&c/TOTAL<.8;k80++)c+=sorted[k80];
+  const mu=mean(views),md=median(views);
+  $("tablet").innerHTML=
+    "<div><dt>G = "+fx(G)+"</dt><dd>коефіцієнт Джині переглядів по <b>відео</b>; для <b>"+songViews.length+" пісень</b> (пунктир) він "+fx(GS)+"</dd></div>"+
+    "<div><dt>"+fx(neff,1)+"</dt><dd><b>ефективна кількість відео</b> 1/HHI: канал поводиться так, ніби в ньому не "+N+", а близько "+Math.round(neff)+" однакових відео</dd></div>"+
+    "<div><dt>"+k80+"</dt><dd>стільки відео з "+N+" ("+Math.round(k80/N*100)+" %) набирають <b>80 % переглядів</b>; найпопулярніші "+k+" мають "+Math.round(top20*100)+" %</dd></div>"+
+    "<div><dt>×"+fx(mu/md,1)+"</dt><dd>середнє "+compact(mu)+" проти медіани "+compact(md)+": середнє тягне вгору один «Мексиканець»</dd></div>";
+  $("lorCap").textContent="Червона крива — частка переглядів, яку мають найменш популярні відео. Що глибше вона прогинається від діагоналі, то нерівніший канал. Наведіть курсор, щоб зчитати значення.";
+  $("lorF").innerHTML="G = 1 − 2∫<sub>0</sub><sup>1</sup> L(p) dp = 2 Σ i·x<sub>i</sub> / (n Σ x<sub>i</sub>) − (n+1)/n, &nbsp; HHI = Σ s<sub>i</sub>², &nbsp; N<sub>ef</sub> = 1/HHI, &nbsp; s<sub>i</sub> = x<sub>i</sub>/Σ x";
+  window.__m={G,GS,neff,k80,top20,mu,md};
+})();
+
+/* ====================== 2. ЦИПФ ====================== */
+(function(){
+  const svg=$("zipf"),PL=110,PR=1170,PT=40,PB=480;
+  const sorted=[...V].sort((a,b)=>b.views-a.views);
+  const lx=sorted.map((v,i)=>Math.log10(i+1)),ly=sorted.map(v=>Math.log10(v.views));
+  const f=ols(lx,ly),t=tcrit(f.n-2),alpha=-f.b,ci=t*f.se;
+  const X0=0,X1=Math.log10(56),Y0=3.3,Y1=7.4;
+  const X=x=>PL+(x-X0)/(X1-X0)*(PR-PL),Y=y=>PB-(y-Y0)/(Y1-Y0)*(PB-PT);
+  const ax=el("g",{class:"axis"},svg);
+  [1e4,1e5,1e6,1e7].forEach(v=>{el("line",{x1:PL,x2:PR,y1:Y(Math.log10(v)),y2:Y(Math.log10(v)),"stroke-dasharray":"2 6"},ax);
+    const a=el("text",{x:PL-12,y:Y(Math.log10(v))+5,"text-anchor":"end"},ax);a.textContent=compact(v)});
+  [1,2,5,10,20,48].forEach(r=>{el("line",{x1:X(Math.log10(r)),x2:X(Math.log10(r)),y1:PT,y2:PB+8},ax);
+    const a=el("text",{x:X(Math.log10(r)),y:PB+30,"text-anchor":"middle"},ax);a.textContent=r});
+  el("line",{x1:PL,x2:PR,y1:PB,y2:PB,stroke:"rgba(221,213,191,.3)"},svg);
+  const xl=el("text",{class:"axt",x:PR,y:PB+58,"text-anchor":"end"},svg);xl.textContent="ранг за переглядами (логарифмічна шкала)";
+  const yl=el("text",{class:"axt",x:PL-12,y:22,"text-anchor":"start"},svg);yl.textContent="перегляди (логарифмічна шкала)";
+  /* лінія */
+  const xa=0,xb=Math.log10(N);
+  el("line",{x1:X(xa),y1:Y(f.a+f.b*xa),x2:X(xb),y2:Y(f.a+f.b*xb),stroke:"#ddd5bf","stroke-width":1.6,"stroke-dasharray":"8 6",opacity:.8},svg);
+  const g=el("g",{},svg);
+  sorted.forEach((v,i)=>{
+    const a=el("g",{class:"pt",tabindex:0,role:"img","aria-label":"Ранг "+(i+1)+": "+v.name+", "+compact(v.views)+" переглядів",transform:"translate("+X(lx[i]).toFixed(1)+","+Y(ly[i]).toFixed(1)+")"},g);
+    el("circle",{r:7.2,fill:"url(#g-"+v.kind+")",stroke:"#070908","stroke-width":1.5},a);
+    const fit=Math.pow(10,f.a+f.b*lx[i]);
+    bind(a,()=>({title:v.name,sub:"ранг "+(i+1)+", "+KIND[v.kind].n,rows:[["переглядів",nf.format(v.views)],["передбачено лінією",nf.format(Math.round(fit))],["відхилення","×"+fx(v.views/fit,2)]]}),
+      ()=>{a.classList.add("on");svg.classList.add("dim")},()=>{a.classList.remove("on");svg.classList.remove("dim")});
+  });
+  /* підписи */
+  [[0,"start",16,-14],[1,"start",16,-14],[2,"start",16,-14]].forEach(([i,an,dx,dy])=>{
+    const tx=el("text",{class:"note",x:X(lx[i])+dx,y:Y(ly[i])+dy,"text-anchor":an},svg);tx.textContent="№"+(i+1)+" "+sorted[i].name.replace(/\s*\(.*\)/,"")});
+  const last=sorted[N-1],tl=el("text",{class:"note",x:X(lx[N-1])-12,y:Y(ly[N-1])-14,"text-anchor":"end"},svg);tl.textContent="№"+N+" "+last.name.replace(/\s*\(.*\)/,"");
+  const b1=el("text",{class:"big",x:PR-6,y:PT+44,"text-anchor":"end"},svg);b1.textContent="α = "+fx(alpha);
+  const b2=el("text",{class:"big2",x:PR-6,y:PT+70,"text-anchor":"end"},svg);b2.textContent="R² = "+fx(f.R2)+", 95 % інтервал ±"+fx(ci);
+
+  const r1=sorted[0].views/Math.pow(10,f.a+f.b*0);
+  $("zipP").innerHTML="Ставимо відео в чергу за переглядами й малюємо ранг проти переглядів у логарифмах. Якщо точки лягають на пряму, перегляди спадають як степінь рангу: V ∝ r<sup>−α</sup>. Тут <b>α = "+fx(alpha)+"</b> (R² = "+fx(f.R2)+"), тобто "+(alpha>1.05?"спад різкіший за класичний Ципф (α = 1)":alpha<0.95?"спад м’якший за класичний Ципф (α = 1)":"майже класичний Ципф (α = 1)")+". Лідер «"+sorted[0].name+"» лежить у <b>"+fx(r1,1).replace(",0","")+" раза</b> вище за лінію, тому що він вибивається з закономірності; насправді решта відео спадають плавніше.";
+  $("zipF").innerHTML="lg V = a − α·lg r, &nbsp; α = −Σ(x−x̄)(y−ȳ)/Σ(x−x̄)², &nbsp; SE(α) = √(SSE/(n−2)/Σ(x−x̄)²), &nbsp; інтервал: α ± t<sub>0,975; n−2</sub>·SE";
+  window.__z={alpha,ci,R2:f.R2,a:f.a};
+})();
+
+/* ====================== 3. СВІЧКИ ====================== */
+(function(){
+  const svg=$("candles"),PL=84,PR=1200,PT=34,PB=450,YMAX=7;
+  const items=V.map(v=>{const [lo,hi]=wilson(v.likes,v.views);return Object.assign({},v,{lo:lo*100,hi:hi*100})}).sort((a,b)=>b.lr-a.lr);
+  const step=(PR-PL)/N,X=i=>PL+(i+.5)*step,Y=p=>PB-p/YMAX*(PB-PT);
+  const ax=el("g",{class:"axis"},svg);
+  for(let p=0;p<=YMAX;p++){el("line",{x1:PL,x2:PR,y1:Y(p),y2:Y(p),"stroke-dasharray":p?"2 6":"none",style:p?"":"stroke:rgba(221,213,191,.3)"},ax);
+    const a=el("text",{x:PL-12,y:Y(p)+5,"text-anchor":"end"},ax);a.textContent=p+" %"}
+  const yl=el("text",{class:"axt",x:PL-12,y:20,"text-anchor":"start"},svg);yl.textContent="лайків від переглядів";
+  const xl=el("text",{class:"axt",x:PR,y:PB+34,"text-anchor":"end"},svg);xl.textContent="відео, від найбільшого відсотка лайків до найменшого";
+  /* зведені лінії */
+  const pooled=sum(V,v=>v.likes)/TOTAL*100,mr=mean(V.map(v=>v.lr)),md=median(V.map(v=>v.lr));
+  el("line",{x1:PL,x2:PR,y1:Y(pooled),y2:Y(pooled),stroke:"#d4533f","stroke-width":1.8,"pointer-events":"none"},svg);
+  el("line",{x1:PL,x2:PR,y1:Y(mr),y2:Y(mr),stroke:"#c19a45","stroke-width":1.8,"stroke-dasharray":"7 5","pointer-events":"none"},svg);
+  const lp=el("text",{class:"note",x:PR-4,y:Y(pooled)+22,"text-anchor":"end",style:"fill:#d4533f"},svg);lp.textContent="загальний відсоток каналу "+fx(pooled)+" %";
+  const lm=el("text",{class:"note",x:PR-4,y:Y(mr)-9,"text-anchor":"end",style:"fill:#c19a45"},svg);lm.textContent="середнє окремих відсотків "+fx(mr)+" %";
+  const g=el("g",{},svg);
+  items.forEach((v,i)=>{
+    const a=el("g",{class:"pt",tabindex:0,role:"img","aria-label":v.name+": "+fx(v.lr)+" % лайків"},g);
+    el("line",{x1:X(i),x2:X(i),y1:Y(v.lo),y2:Y(v.hi),stroke:"#ddd5bf","stroke-width":2,"stroke-linecap":"round",opacity:.85},a);
+    el("line",{x1:X(i)-4,x2:X(i)+4,y1:Y(v.hi),y2:Y(v.hi),stroke:"#ddd5bf","stroke-width":1.5},a);
+    el("line",{x1:X(i)-4,x2:X(i)+4,y1:Y(v.lo),y2:Y(v.lo),stroke:"#ddd5bf","stroke-width":1.5},a);
+    el("circle",{cx:X(i),cy:Y(v.lr),r:5.6,fill:"url(#g-"+v.kind+")",stroke:"#070908","stroke-width":1.4},a);
+    el("rect",{x:X(i)-step/2,y:PT,width:step,height:PB-PT,fill:"transparent"},a);
+    bind(a,()=>({title:v.name,sub:KIND[v.kind].n+", "+fdate(v.date),rows:[["лайків / переглядів",nf.format(v.likes)+" / "+nf.format(v.views)],["відсоток",fx(v.lr,2)+" %"],["95 % інтервал Вілсона",fx(v.lo,2)+" … "+fx(v.hi,2)+" %"],["ширина інтервалу","±"+fx((v.hi-v.lo)/2,2)+" п. п."]]}),
+      ()=>{a.classList.add("on");svg.classList.add("dim")},()=>{a.classList.remove("on");svg.classList.remove("dim")});
+  });
+  const wid=[...items].sort((a,b)=>(b.hi-b.lo)-(a.hi-a.lo));
+  const w1=wid[0],w2=wid[N-1];
+  $("wilP").innerHTML="Один відсоток лайків на 3 тисячі переглядів і на 15 мільйонів — не однаково надійні числа. Кожна свічка показує відсоток (кулька) і 95 % інтервал Вілсона (гніт): найвужчий у «"+w2.name+"» (±"+fx((w2.hi-w2.lo)/2,2)+" п. п.), найширший у «"+w1.name+"» (±"+fx((w1.hi-w1.lo)/2,1)+" п. п.). Додатково видно різницю між двома «середніми»: <b>загальний відсоток каналу "+fx(pooled)+" %</b> проти <b>"+fx(mr)+" %</b> як середнього окремих відсотків (медіана "+fx(md)+" %). Популярні відео лайкають рідше, а загальний відсоток зважений саме на них.";
+  $("wilF").innerHTML="p̂ = k/n, &nbsp; інтервал = ( p̂ + z²/2n ± z·√( p̂(1−p̂)/n + z²/4n² ) ) / ( 1 + z²/n ), &nbsp; z = 1,96";
+})();
+
+/* ====================== 4. КІСТКИ ====================== */
+(function(){
+  const svg=$("dice"),PL=70,PR=1180,PT=50,PB=370;
+  const A=V.filter(v=>v.kind==="rec").map(v=>v.lr),Bv=V.filter(v=>v.kind!=="rec").map(v=>v.lr);
+  const nA=A.length,nB=Bv.length,all=A.concat(Bv),obs=median(A)-median(Bv);
+  let cliff=0;A.forEach(a=>Bv.forEach(b=>{cliff+=a>b?1:a<b?-1:0}));cliff/=nA*nB;
+  const BR=1.4*Math.abs(obs),NB=46,bw=(PR-PL)/NB,bins=new Array(NB).fill(0);
+  const X=d=>PL+(d+BR)/(2*BR)*(PR-PL);
+  const NP=20000;
+  let ymax=1,done=0,cnt=0,running=false,sdp=0;
+  const ax=el("g",{class:"axis"},svg);
+  const tk=[];for(let d=-Math.floor(BR);d<=Math.floor(BR);d++)tk.push(d);
+  tk.forEach(d=>{el("line",{x1:X(d),x2:X(d),y1:PT,y2:PB+8,style:d?"":"stroke:rgba(221,213,191,.3)"},ax);const a=el("text",{x:X(d),y:PB+30,"text-anchor":"middle"},ax);a.textContent=(d>0?"+":d<0?"−":"")+Math.abs(d)});
+  const xl=el("text",{class:"axt",x:PR,y:PB+58,"text-anchor":"end"},svg);xl.textContent="різниця медіан «запис» мінус «відео та концерти», процентних пунктів";
+  /* зони «не менш екстремально» */
+  el("rect",{x:PL,y:PT,width:Math.max(0,X(-Math.abs(obs))-PL),height:PB-PT,fill:"rgba(212,83,63,.08)"},svg);
+  el("rect",{x:X(Math.abs(obs)),y:PT,width:Math.max(0,PR-X(Math.abs(obs))),height:PB-PT,fill:"rgba(212,83,63,.08)"},svg);
+  const gb=el("g",{},svg);
+  const ob=el("line",{x1:X(obs),x2:X(obs),y1:PT-6,y2:PB,stroke:"#d4533f","stroke-width":2.6},svg);
+  const ol=el("text",{class:"note",x:X(obs)+10,y:PT+8,"text-anchor":"start"},svg);ol.textContent="спостережено Δ = "+fx(obs)+" п. п.";
+  const ol2=el("text",{class:"note",x:X(obs)+10,y:PT+28,"text-anchor":"start",style:"fill:#a09a84"},svg);ol2.textContent="медіана записів "+fx(median(A))+" %, інших "+fx(median(Bv))+" %";
+  const cn=el("text",{class:"axt",x:PL,y:30,"text-anchor":"start"},svg);cn.textContent="кількість перестановок у кожній смузі";
+  function draw(){
+    gb.textContent="";
+    bins.forEach((c,i)=>{if(!c)return;const h=c/ymax*(PB-PT-30),x0=PL+i*bw+2,w=bw-4,top=PB-h;
+      el("path",{d:h>w/2+2?"M"+x0+","+PB+" V"+(top+w*.5)+" L"+(x0+w/2)+","+top+" L"+(x0+w)+","+(top+w*.5)+" V"+PB+"Z":"M"+x0+","+PB+" V"+top+" H"+(x0+w)+" V"+PB+"Z",
+        fill:"url(#barG)",stroke:"#070908","stroke-width":1.2},gb)});
+  }
+  function pval(){return (cnt+1)/(done+1)}
+  function verdict(){
+    const p=pval(),ps=p<.0001?"p < 0,0001":"p = "+fx(p,4);
+    $("verdict").innerHTML="Після <b>"+nf.format(done)+"</b> перестановок міток жодна не дала різниці, схожої на спостережену, більшої за модулем: "+(cnt===0?"їх було <b>0</b>":"таких було <b>"+cnt+"</b>")+", тож <b>"+ps+"</b>. Розмір ефекту: δ Кліффа = <b>"+fx(cliff)+"</b> (від −1 до 1; тут майже кожен запис лайкають рідше за майже кожне відео чи концерт). Але це не доводить, що «запис» як такий гірший: записи ще й найпопулярніші, а відсоток лайків падає з охопленням, що видно на «Кажанах» і в матриці нижче.";
+  }
+  $("diceP").innerHTML="Чи справді записи лайкають рідше, чи це випадок? Беремо "+nA+" записів і "+nB+" відео та концертів, тисячі разів випадково перетасовуємо мітки й щоразу рахуємо ту саму різницю медіан. Якщо спостережена різниця тоне в натовпі перестановок, це міг бути випадок. Якщо стоїть далеко за краєм, ні.";
+  $("diceF").innerHTML="Δ = med(A) − med(B), &nbsp; p = ( 1 + #{ |Δ*| ≥ |Δ| } ) / ( B + 1 ), &nbsp; B = "+nf.format(NP)+" перестановок, &nbsp; δ = ( #{a&gt;b} − #{a&lt;b} ) / ( n<sub>A</sub>·n<sub>B</sub> )";
+  function run(seed,animate){
+    if(running)return;running=true;$("roll").disabled=true;
+    bins.fill(0);done=0;cnt=0;ymax=1;
+    const rnd=mulberry(seed),arr=all.slice(),absObs=Math.abs(obs);
+    const medOf=(a,n)=>{const s=a.slice(0,n).sort((x,y)=>x-y),m=n>>1;return n%2?s[m]:(s[m-1]+s[m])/2};
+    const batch=animate?400:NP;
+    function step(){
+      for(let t=0;t<batch&&done<NP;t++,done++){
+        for(let i=arr.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const q=arr[i];arr[i]=arr[j];arr[j]=q}
+        const a=arr.slice(0,nA),b=arr.slice(nA);
+        const d=medOf(a,nA)-medOf(b,nB);
+        if(Math.abs(d)>=absObs-1e-12)cnt++;
+        const bi=Math.max(0,Math.min(NB-1,Math.floor((d+BR)/(2*BR)*NB)));bins[bi]++;
+      }
+      ymax=Math.max(ymax,...bins);draw();
+      $("prog").textContent="перестановок: "+nf.format(done)+" з "+nf.format(NP);
+      if(done<NP)requestAnimationFrame(step);else{running=false;$("roll").disabled=false;verdict();$("prog").textContent="готово: "+nf.format(NP)+" перестановок"}
+    }
+    step();
+  }
+  $("roll").addEventListener("click",()=>run((Math.random()*2**31)|0,!reduce));
+  const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();run(20261010,!reduce)}},{threshold:.25});io.observe(svg);
+  window.__d={obs,cliff,nA,nB};
+})();
+
+/* ====================== 5. СКЛЯНА СІТКА ====================== */
+(function(){
+  const svg=$("matrix"),X0=268,Y0=96,CW=140,CH=70;
+  const vars=[
+    {n:"перегляди",x:V.map(v=>Math.log10(v.views)),r:V.map(v=>v.views)},
+    {n:"лайки",x:V.map(v=>Math.log10(v.likes)),r:V.map(v=>v.likes)},
+    {n:"коментарі",x:V.map(v=>Math.log10(v.comments)),r:V.map(v=>v.comments)},
+    {n:"тривалість",x:V.map(v=>v.dur),r:V.map(v=>v.dur)},
+    {n:"вік відео",x:V.map(v=>Math.log10(v.days)),r:V.map(v=>v.days)},
+    {n:"% лайків",x:V.map(v=>v.lr),r:V.map(v=>v.lr)}
+  ];
+  const K=vars.length,P=[],Sp=[];
+  for(let i=0;i<K;i++){P[i]=[];Sp[i]=[];for(let j=0;j<K;j++){P[i][j]=i===j?1:pearson(vars[i].x,vars[j].x);Sp[i][j]=i===j?1:spearman(vars[i].r,vars[j].r)}}
+  const col=r=>r>=0?"rgb(122,154,94)":"rgb(168,38,31)";
+  vars.forEach((v,j)=>{const t=el("text",{class:"cl",x:X0+j*CW+CW/2,y:Y0-18,"text-anchor":"middle"},svg);t.textContent=v.n});
+  vars.forEach((v,i)=>{const t=el("text",{class:"cl",x:X0-18,y:Y0+i*CH+CH/2+6,"text-anchor":"end"},svg);t.textContent=v.n});
+  for(let i=0;i<K;i++)for(let j=0;j<K;j++){
+    const up=j>i,diag=i===j,r=diag?1:(up?P[i][j]:Sp[i][j]);
+    const g=el("g",{class:"cell",tabindex:diag?-1:0,role:"img","aria-label":vars[i].n+" і "+vars[j].n+": "+(up?"Пірсон ":"Спірмен ")+fx(r)},svg);
+    el("rect",{class:"f",x:X0+j*CW+2,y:Y0+i*CH+2,width:CW-4,height:CH-4,rx:2,fill:diag?"#141b17":col(r),"fill-opacity":diag?1:.16+.82*Math.abs(r),stroke:"#070908","stroke-width":3},g);
+    if(!diag)el("rect",{x:X0+j*CW+2,y:Y0+i*CH+2,width:CW-4,height:CH-4,rx:2,fill:"url(#shine)","pointer-events":"none"},g);
+    const t=el("text",{class:"cv",x:X0+j*CW+CW/2,y:Y0+i*CH+CH/2+8,style:diag?"fill:#5d6a60":""},g);t.textContent=diag?"1":fx(r);
+    if(!diag)bind(g,()=>({title:vars[i].n+" ↔ "+vars[j].n,sub:"n = "+N,rows:[["Пірсон (на логарифмах)",fx(P[i][j],3)],["Спірмен (на рангах)",fx(Sp[i][j],3)],["R² = r²",fx(P[i][j]**2,2)]]}),()=>g.classList.add("on"),()=>g.classList.remove("on"));
+  }
+  const cap1=el("text",{class:"axt",x:X0+K*CW,y:Y0+K*CH+30,"text-anchor":"end"},svg);cap1.textContent="над діагоналлю — Пірсон, під нею — Спірмен; зелений — зв’язок додатний, червоний — від’ємний";
+  const cap2=el("text",{class:"axt",x:X0+K*CW,y:Y0+K*CH+52,"text-anchor":"end"},svg);cap2.textContent="перегляди, лайки, коментарі й вік — у логарифмах";
+  svg.setAttribute("viewBox","0 0 1240 "+(Y0+K*CH+70));
+
+  /* висновки */
+  const pairs=[];for(let i=0;i<K;i++)for(let j=i+1;j<K;j++)pairs.push({i,j,r:P[i][j],s:Sp[i][j]});
+  const neg=pairs.reduce((a,b)=>b.r<a.r?b:a),idx=n=>vars.findIndex(v=>v.n===n);
+  const pr=(a,b)=>{const i=idx(a),j=idx(b);return {r:P[Math.min(i,j)][Math.max(i,j)],s:Sp[Math.max(i,j)][Math.min(i,j)]}};
+  const lv=vars[0].x,ll=vars[1].x,fit=ols(lv,ll),tc=tcrit(fit.n-2);
+  const ag=pr("вік відео","перегляди"),du=pr("тривалість","перегляди"),dl=pr("тривалість","% лайків");
+  $("matP").innerHTML="Шість величин, п’ятнадцять пар. Найсильніший від’ємний зв’язок — «"+vars[neg.i].n+"» і «"+vars[neg.j].n+"»: <b>r = "+fx(neg.r)+"</b> (Спірмен ρ = "+fx(neg.s)+"). Лайки ростуть повільніше за перегляди: якщо підігнати lg(лайки) = a + β·lg(перегляди), то <b>β = "+fx(fit.b)+" ± "+fx(tc*fit.se)+"</b>, а за пропорційності було б β = 1, тому з кожним подвоєнням переглядів відсоток лайків падає приблизно на "+fx((1-Math.pow(2,fit.b-1))*100,0)+" %. Вік відео з переглядами пов’язаний слабко (r = "+fx(ag.r)+"), а тривалість із переглядами — r = "+fx(du.r)+", з відсотком лайків — r = "+fx(dl.r)+".";
+  $("matF").innerHTML="r = Σ(x−x̄)(y−ȳ) / √( Σ(x−x̄)² · Σ(y−ȳ)² ), &nbsp; ρ = r( rank(x), rank(y) ), &nbsp; β: lg L = a + β·lg V, &nbsp; відсоток лайків ∝ V<sup>β−1</sup>";
+  window.__c={neg:[vars[neg.i].n,vars[neg.j].n,neg.r],beta:fit.b,se:fit.se,ag:ag.r,du:du.r,dl:dl.r};
+})();
+})();
+</script>
+</body>
+</html>
