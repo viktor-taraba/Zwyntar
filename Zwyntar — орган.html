@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zwyntar — орган</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Ruslan+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --swamp:#0d1210; --peat:#151c18; --stone:#2a332c; --bone:#ddd5bf; --ash:#a09a84;
+  --blood:#a8261f; --ember:#d4533f; --moss:#7a9a5e; --brass:#c19a45; --lead:#070908;
+  --display:"Ruslan Display","Palatino Linotype",Palatino,Georgia,serif;
+  --text:"EB Garamond","Iowan Old Style",Palatino,Georgia,serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--swamp)}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;background:var(--swamp);color:var(--bone);
+  font:400 1.18rem/1.6 var(--text);font-variant-numeric:oldstyle-nums;
+  background-image:
+    radial-gradient(1100px 800px at 50% 18%,rgba(168,38,31,.12),transparent 70%),
+    radial-gradient(900px 600px at 8% 75%,rgba(122,154,94,.06),transparent 70%),
+    linear-gradient(var(--swamp),#090c0b);
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.07;mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(18px,4vw,48px)}
+header.hero{padding-top:clamp(28px,6vw,64px)}
+.mark{font-family:var(--display);font-size:1.5rem;color:var(--ember)}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;color:var(--bone)}
+h1{font-size:clamp(3.4rem,11vw,9rem);margin:.12em 0 .2em;text-shadow:0 0 44px rgba(168,38,31,.38)}
+h2{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:.35em}
+p{margin:0 0 1em}
+.lede,.stats{max-width:62ch}
+.stats{color:var(--ash);font-style:italic}
+.stats b{font-style:normal;font-weight:500;color:var(--bone)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 28px;margin:18px 0 0;padding:0;list-style:none;color:var(--ash);font-size:1rem}
+.legend li{display:flex;align-items:center;gap:10px}
+.legend i{width:13px;height:13px;transform:rotate(45deg);background:var(--c);box-shadow:0 0 0 1.5px var(--lead) inset,0 0 0 1px rgba(221,213,191,.3)}
+.legend i.round{transform:none;border-radius:50%}
+.legend i.cross{transform:none;background:none;box-shadow:none;position:relative}
+.legend i.cross::before,.legend i.cross::after{content:"";position:absolute;background:var(--ember)}
+.legend i.cross::before{left:5.5px;top:0;width:2px;height:13px}
+.legend i.cross::after{left:1px;top:4px;width:11px;height:2px}
+.legend i.dash{transform:none;background:none;box-shadow:none;height:0;width:22px;border-top:2px dashed var(--ember)}
+section{padding:clamp(52px,8vw,110px) 0 0}
+section .wrap > p{max-width:64ch;color:var(--ash)}
+section .wrap > p b{color:var(--bone);font-weight:500}
+.cap{font-size:.95rem;color:var(--ash);font-style:italic;margin:.4em 0 0}
+.field{position:relative;overflow-x:auto;overflow-y:hidden;margin-top:10px;-webkit-overflow-scrolling:touch;scrollbar-color:var(--stone) transparent}
+.field svg{display:block;width:100%;height:auto;min-width:1040px}
+.swipe{display:none}
+@media (max-width:1100px){.swipe{display:block}}
+
+/* орган */
+.pipe{cursor:pointer;outline:none;transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s}
+.pre .pipe{transform:scaleY(.02)}
+.pipe.on,.pipe:focus-visible{filter:drop-shadow(0 0 9px rgba(212,83,63,.75))}
+.dimP .pipe:not(.on){opacity:.3}
+.hl{transition:opacity .8s 1.5s}
+.pre .hl{opacity:0}
+.hl1{font:italic 400 16px var(--text);fill:var(--bone);text-anchor:middle;paint-order:stroke;stroke:#0d1210;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.hl2{font:400 28px var(--display);fill:var(--ember);text-anchor:middle;pointer-events:none}
+.pn{font:400 14px var(--text);fill:var(--ash);text-anchor:middle;font-variant-numeric:oldstyle-nums;pointer-events:none}
+.gn{font:400 23px var(--display);fill:var(--bone);text-anchor:middle;pointer-events:none}
+.gs{font:italic 400 14.5px var(--text);fill:var(--ash);text-anchor:middle;pointer-events:none}
+
+/* нитки */
+.axis text{font:400 15px var(--text);fill:var(--ash);font-variant-numeric:oldstyle-nums}
+.axis line{stroke:rgba(221,213,191,.09)}
+.rl{font:400 17px var(--text);fill:var(--bone);text-anchor:end}
+.rowhit:hover + .rl,.rowhit.on + .rl{fill:var(--ember)}
+.dot{cursor:pointer;outline:none;transition:opacity .3s,filter .3s}
+.dot.on,.dot:focus-visible{filter:drop-shadow(0 0 7px rgba(212,83,63,.85))}
+.dn{font:500 12.5px var(--text);fill:#0d1210;text-anchor:middle;pointer-events:none}
+
+/* чотки */
+.tl{font:400 19px var(--text);fill:var(--bone);text-anchor:end}
+.tr{font:italic 400 14px var(--text);fill:var(--ash);text-anchor:start}
+.col:hover,.col.on{fill:rgba(221,213,191,.07)}
+.bn{font:italic 400 15px var(--text);fill:var(--bone);paint-order:stroke;stroke:#0d1210;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+
+/* бібліотека */
+.book{cursor:pointer;outline:none;transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1),filter .3s}
+.book.on,.book:focus-visible{transform:translateY(-12px);filter:drop-shadow(0 0 10px rgba(212,83,63,.6))}
+.dimL .book:not(.on){opacity:.4}
+.bt{font:400 14.5px var(--display);fill:var(--bone);pointer-events:none}
+.bc{font:500 14px var(--text);fill:var(--bone);text-anchor:middle;pointer-events:none;font-variant-numeric:oldstyle-nums}
+.by{font:400 14px var(--text);fill:var(--ash);text-anchor:middle;pointer-events:none}
+
+/* підказка */
+#tip{position:fixed;z-index:20;left:0;top:0;max-width:310px;pointer-events:none;
+  background:rgba(13,18,16,.96);border:1px solid rgba(221,213,191,.22);border-radius:2px;
+  padding:12px 15px 11px;box-shadow:0 10px 40px rgba(0,0,0,.65),0 0 0 1px #000;font-size:1.02rem;line-height:1.4}
+#tip[hidden]{display:none}
+#tip .tn{font-family:var(--display);font-size:1.3rem;line-height:1.15;color:var(--bone);margin-bottom:3px}
+#tip .tk{color:var(--ash);font-style:italic;margin-bottom:6px}
+#tip .trw{display:flex;justify-content:space-between;gap:18px}
+#tip .trw span:first-child{color:var(--ash)}
+#tip .th{margin-top:7px;font-size:.88rem;color:var(--ember);font-style:italic}
+footer{padding:clamp(56px,8vw,96px) 0 56px;color:var(--ash);font-size:1rem}
+footer .wrap{border-top:1px solid rgba(221,213,191,.14);padding-top:22px}
+footer p{max-width:80ch;margin-bottom:.5em}
+a{color:inherit}
+@media (prefers-reduced-motion:reduce){.pipe,.dot,.book,.hl{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="g-rec" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#e86a52"/><stop offset=".5" stop-color="#a8261f"/><stop offset="1" stop-color="#4a0f0c"/></radialGradient>
+    <radialGradient id="g-vid" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#ecca80"/><stop offset=".5" stop-color="#b8923f"/><stop offset="1" stop-color="#4a350f"/></radialGradient>
+    <radialGradient id="pearl" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fffbea"/><stop offset=".55" stop-color="#d8cfb2"/><stop offset="1" stop-color="#6c6855"/></radialGradient>
+    <linearGradient id="pipeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3f463b"/><stop offset=".3" stop-color="#cfc7ad"/><stop offset=".55" stop-color="#ebe4cc"/><stop offset="1" stop-color="#3b4137"/></linearGradient>
+    <linearGradient id="pipeHot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a0b09"/><stop offset=".3" stop-color="#d4533f"/><stop offset=".55" stop-color="#ee7a62"/><stop offset="1" stop-color="#3a0b09"/></linearGradient>
+    <linearGradient id="ledgeG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a463d"/><stop offset="1" stop-color="#171e19"/></linearGradient>
+    <linearGradient id="leatherR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a0b09"/><stop offset=".45" stop-color="#8f2219"/><stop offset="1" stop-color="#340a08"/></linearGradient>
+    <linearGradient id="leatherM" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#17240f"/><stop offset=".45" stop-color="#4d6b3b"/><stop offset="1" stop-color="#121c0c"/></linearGradient>
+    <filter id="rough" x="-3%" y="-10%" width="106%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5"/></filter>
+  </defs>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="mark">Zwyntar</div>
+    <h1>Орган</h1>
+    <p class="lede">Усі релізи в одному храмі. Кожна труба — трек, її висота — перегляди (шкала стиснута), групи — альбоми й EP, а справа — сингли. Наведіть курсор на трубу, клік відкриє трек на YouTube.</p>
+    <p class="stats" id="orgStat"></p>
+    <ul class="legend">
+      <li><i style="--c:#d4533f"></i>найпопулярніший трек релізу</li>
+      <li><i style="--c:#cfc7ad"></i>решта треків</li>
+    </ul>
+  </div>
+</header>
+<div class="field"><svg id="organ" viewBox="0 0 1240 740" role="group" aria-label="Треки релізів як органні труби: висота — перегляди"></svg></div>
+<div class="wrap"><p class="cap swipe">Поле ширше за екран — гортайте його вбік.</p><p class="cap">Треки релізів — здебільшого автогенеровані відео, тому їхні перегляди відрізняються від переглядів кліпів. «Госпел», «Дівча» та «Янголе небесний» входять і в сингли, і в «Тисячу Очей», тож їхні труби повторюються.</p></div>
+
+<section>
+  <div class="wrap">
+    <h2>Нитки</h2>
+    <p id="thrP"></p>
+    <ul class="legend">
+      <li><i class="round" style="--c:#c19a45"></i>окреме відео каналу</li>
+      <li><i class="round" style="--c:#a8261f"></i>трек лише в релізі</li>
+      <li><i class="cross"></i>дата релізу</li>
+      <li><i class="dash"></i>відео старше за реліз</li>
+    </ul>
+  </div>
+  <div class="field"><svg id="threads" viewBox="0 0 1240 640" role="group" aria-label="Дати відео проти дати релізу"></svg></div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Чотки</h2>
+    <p id="beadP"></p>
+  </div>
+  <div class="field"><svg id="beads" viewBox="0 0 1240 440" role="group" aria-label="Жанрові ярлики YouTube для 48 відео за датою"></svg></div>
+  <div class="wrap"><p class="cap">Ярлики ставить YouTube за темами зі статей Вікіпедії, а не гурт. Загальний ярлик «Музика» є в усіх 48 відео, тому його не показано.</p></div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Бібліотека</h2>
+    <p id="libP"></p>
+    <ul class="legend">
+      <li><i style="--c:#8f2219"></i>реліз</li>
+      <li><i style="--c:#4d6b3b"></i>плейлист каналу</li>
+    </ul>
+  </div>
+  <div class="field"><svg id="library" viewBox="0 0 1240 560" role="group" aria-label="Плейлисти як книги: ширина — кількість відео, висота — перегляди"></svg></div>
+  <div class="wrap"><p class="cap">Ширина книги — кількість відео, висота — перегляди. Для плейлистів каналу враховано лише відео, що є серед 48 знайдених.</p></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Дані: YouTube Data API v3, канал Zwyntar, зібрано 10.10.2026. Аркуші «Релізи», «Треки релізів», «Плейлисти» та категорії з аркуша «Пісні». Усі дати — UTC.</p>
+    <p>Тип релізу — припущення з файлу: один трек це сингл, більше — альбом або EP.</p>
+  </div>
+</footer>
+
+<div id="tip" role="tooltip" hidden></div>
+
+<script>const DATA = {"tracks": [{"rel": "Кажани 1983", "no": 1, "id": "to17zYCFFIU", "name": "Кажани 1983", "inch": true, "date": "2025-10-23", "views": 35040, "likes": 2148, "comments": 116, "dur": 258}, {"rel": "Тисяча Очей", "no": 1, "id": "FoHQ5LdfcDM", "name": "Інтродукція. Кам’яна могила", "inch": false, "date": "2023-10-12", "views": 267074, "likes": 3615, "comments": 62, "dur": 210}, {"rel": "Тисяча Очей", "no": 2, "id": "VtiaROx6_18", "name": "Диявол входить у місто", "inch": false, "date": "2023-10-12", "views": 468259, "likes": 3501, "comments": 20, "dur": 220}, {"rel": "Тисяча Очей", "no": 3, "id": "Ujq3pNP0J-M", "name": "Госпел", "inch": true, "date": "2022-02-27", "views": 296843, "likes": 9168, "comments": 295, "dur": 218}, {"rel": "Тисяча Очей", "no": 4, "id": "FYwtroulTeg", "name": "Дівча", "inch": true, "date": "2021-06-17", "views": 337982, "likes": 8215, "comments": 476, "dur": 212}, {"rel": "Тисяча Очей", "no": 5, "id": "1zjlqjr0TvQ", "name": "Погана кров", "inch": false, "date": "2023-10-12", "views": 658187, "likes": 6382, "comments": 49, "dur": 189}, {"rel": "Тисяча Очей", "no": 6, "id": "B3ua2ysGIp0", "name": "Білим снігом", "inch": false, "date": "2023-10-12", "views": 353522, "likes": 3189, "comments": 32, "dur": 243}, {"rel": "Тисяча Очей", "no": 7, "id": "pIvVTkQfrK0", "name": "Янголе небесний", "inch": true, "date": "2022-01-21", "views": 330124, "likes": 9929, "comments": 565, "dur": 268}, {"rel": "Тисяча Очей", "no": 8, "id": "thgS-xotBrk", "name": "Белла", "inch": false, "date": "2023-10-12", "views": 369330, "likes": 2912, "comments": 35, "dur": 255}, {"rel": "Тисяча Очей", "no": 9, "id": "aes01FbEVMw", "name": "Трясовина", "inch": false, "date": "2023-10-12", "views": 2186719, "likes": 17388, "comments": 182, "dur": 258}, {"rel": "Тисяча Очей", "no": 10, "id": "6GWH2j-nwEk", "name": "Мати Темрява", "inch": false, "date": "2023-10-12", "views": 488967, "likes": 4415, "comments": 69, "dur": 326}, {"rel": "Тисяча Очей", "no": 11, "id": "Ej_QqhpWyfM", "name": "Ящірка", "inch": false, "date": "2023-10-12", "views": 176708, "likes": 1909, "comments": 43, "dur": 325}, {"rel": "Мертві голоси", "no": 1, "id": "yRVO6fh92OU", "name": "Мексиканець", "inch": false, "date": "2018-12-13", "views": 15768741, "likes": 133636, "comments": 1753, "dur": 237}, {"rel": "Мертві голоси", "no": 2, "id": "kHm0yl_PbEc", "name": "Мої сестри — відьми", "inch": false, "date": "2018-12-13", "views": 979832, "likes": 7368, "comments": 36, "dur": 232}, {"rel": "Мертві голоси", "no": 3, "id": "AuFxE7rePVA", "name": "Муншайн", "inch": true, "date": "2023-08-11", "views": 830878, "likes": 12732, "comments": 370, "dur": 191}, {"rel": "Мертві голоси", "no": 4, "id": "qRHOOubXnLI", "name": "Микола", "inch": false, "date": "2018-12-13", "views": 1863692, "likes": 21749, "comments": 138, "dur": 264}, {"rel": "Мертві голоси", "no": 5, "id": "HZYwV-y4OlI", "name": "Кажани", "inch": true, "date": "2020-02-14", "views": 462051, "likes": 11892, "comments": 446, "dur": 285}, {"rel": "Мертві голоси", "no": 6, "id": "LZlGfBjfDrY", "name": "На болоті", "inch": false, "date": "2018-12-13", "views": 853032, "likes": 6727, "comments": 50, "dur": 324}, {"rel": "Мертві голоси", "no": 7, "id": "eP1BNFCLQZ0", "name": "Мертві голоси", "inch": false, "date": "2018-12-13", "views": 528982, "likes": 4215, "comments": 30, "dur": 235}, {"rel": "Мертві голоси", "no": 8, "id": "ApH-OPjcufg", "name": "Човен", "inch": true, "date": "2019-01-29", "views": 2841805, "likes": 45022, "comments": 2170, "dur": 315}, {"rel": "Мертві голоси", "no": 9, "id": "kOssw3pCTXo", "name": "Півні", "inch": false, "date": "2018-12-13", "views": 1148821, "likes": 10073, "comments": 70, "dur": 198}, {"rel": "На іншому боці ріки", "no": 1, "id": "r_Kg-S_Qin0", "name": "Потяг на південь", "inch": false, "date": "2025-05-29", "views": 3892458, "likes": 33344, "comments": 558, "dur": 207}, {"rel": "На іншому боці ріки", "no": 2, "id": "ADejqB0jpig", "name": "Чоловік у чорному", "inch": false, "date": "2025-05-29", "views": 528794, "likes": 4421, "comments": 49, "dur": 310}, {"rel": "На іншому боці ріки", "no": 3, "id": "VRVVgpMTIz0", "name": "Червона ріка", "inch": false, "date": "2025-05-29", "views": 473155, "likes": 5334, "comments": 132, "dur": 367}, {"rel": "На іншому боці ріки", "no": 4, "id": "CQBKLsZrfys", "name": "Ніч упаде", "inch": true, "date": "2026-03-27", "views": 281479, "likes": 6756, "comments": 249, "dur": 235}, {"rel": "Гріх", "no": 1, "id": "VGt4LKItp4s", "name": "Танцюй і пий", "inch": true, "date": "2017-08-16", "views": 446029, "likes": 7321, "comments": 142, "dur": 271}, {"rel": "Гріх", "no": 2, "id": "H12Hinx05ro", "name": "Чорне дерево", "inch": true, "date": "2023-12-07", "views": 161174, "likes": 5774, "comments": 223, "dur": 205}, {"rel": "Гріх", "no": 3, "id": "8L1-Nrm-Pqw", "name": "Джонні", "inch": true, "date": "2019-09-02", "views": 220655, "likes": 4706, "comments": 167, "dur": 228}, {"rel": "Гріх", "no": 4, "id": "07AXr1d2mS8", "name": "Гріх", "inch": true, "date": "2017-08-16", "views": 57833, "likes": 1214, "comments": 21, "dur": 334}, {"rel": "Гріх", "no": 5, "id": "X2O5tRezEgU", "name": "Ти не Бог", "inch": true, "date": "2017-08-16", "views": 210934, "likes": 3633, "comments": 71, "dur": 248}, {"rel": "Не довіряй смертним", "no": 1, "id": "MkKR2aB-Xi8", "name": "Не довіряй смертним", "inch": true, "date": "2024-10-30", "views": 721747, "likes": 12397, "comments": 393, "dur": 269}, {"rel": "Білим снігом", "no": 1, "id": "0Q1hW9ufNZg", "name": "Білим снігом", "inch": false, "date": "2023-02-27", "views": 1470517, "likes": 14920, "comments": 265, "dur": 244}, {"rel": "Диявол Входить У Місто", "no": 1, "id": "1B4AxahyQJQ", "name": "Диявол входить у місто", "inch": true, "date": "2022-10-31", "views": 323589, "likes": 8507, "comments": 403, "dur": 220}, {"rel": "Госпел", "no": 1, "id": "Ujq3pNP0J-M", "name": "Госпел", "inch": true, "date": "2022-02-27", "views": 296843, "likes": 9168, "comments": 295, "dur": 218}, {"rel": "Янголе небесний", "no": 1, "id": "pIvVTkQfrK0", "name": "Янголе небесний", "inch": true, "date": "2022-01-21", "views": 330124, "likes": 9929, "comments": 565, "dur": 268}, {"rel": "Дівча", "no": 1, "id": "FYwtroulTeg", "name": "Дівча", "inch": true, "date": "2021-06-17", "views": 337982, "likes": 8215, "comments": 476, "dur": 212}, {"rel": "Na boloti", "no": 1, "id": "JavVTOm8UEw", "name": "На болоті", "inch": true, "date": "2017-07-17", "views": 656978, "likes": 10121, "comments": 329, "dur": 324}], "rels": [{"name": "Na boloti", "date": "2017-12-19", "tracks": 1, "views": 656978, "likes": 10121, "dur": "05:24", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lmSJKkFGp9Wpl8TsK81TDxHCC91qMxJUM"}, {"name": "Мертві голоси", "date": "2018-12-12", "tracks": 9, "views": 25277834, "likes": 253414, "dur": "38:01", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lRNDRXqkM-ZoVuvrk8jAdfTxYnlur3YnY"}, {"name": "Дівча", "date": "2021-05-29", "tracks": 1, "views": 337982, "likes": 8215, "dur": "03:32", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kTh8T8n4YDN5drotBb47BeetBZosg5BVc"}, {"name": "Янголе небесний", "date": "2021-10-12", "tracks": 1, "views": 330124, "likes": 9929, "dur": "04:28", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kdPYGpGTHPBNNwI6MGqfgZYWf51944uOg"}, {"name": "Госпел", "date": "2022-04-19", "tracks": 1, "views": 296843, "likes": 9168, "dur": "03:38", "url": "https://www.youtube.com/playlist?list=OLAK5uy_nRNes5qTyx2VQCXNcXRqi2nbK8e5VVpdw"}, {"name": "Диявол Входить У Місто", "date": "2022-11-30", "tracks": 1, "views": 323589, "likes": 8507, "dur": "03:40", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lp-HPRkkZkWh1BKKSQfcaHea0bbnoRmI4"}, {"name": "Білим снігом", "date": "2023-02-22", "tracks": 1, "views": 1470517, "likes": 14920, "dur": "04:04", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kbQvULq_9zT8-u55527jBaXHb4JwVUSxA"}, {"name": "Тисяча Очей", "date": "2023-10-05", "tracks": 11, "views": 5933715, "likes": 70623, "dur": "45:24", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lHAC-UUl7dq4fhBdU7S5RK10uG6wdyXJE"}, {"name": "Гріх", "date": "2023-11-21", "tracks": 5, "views": 1096625, "likes": 22648, "dur": "21:26", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kw7_qIWs2jSEgzmDMnFfe7HtrPmR3wG_I"}, {"name": "Не довіряй смертним", "date": "2024-10-29", "tracks": 1, "views": 721747, "likes": 12397, "dur": "04:29", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kDCfQJ0dT3Y4MeHd-hN2EsCSJkOMLEt10"}, {"name": "На іншому боці ріки", "date": "2025-05-21", "tracks": 4, "views": 5175886, "likes": 49855, "dur": "18:39", "url": "https://www.youtube.com/playlist?list=OLAK5uy_mOfBsfeuqouodl8nvgEmQ0_YEhfrbOQcg"}, {"name": "Кажани 1983", "date": "2025-10-09", "tracks": 1, "views": 35040, "likes": 2148, "dur": "04:18", "url": "https://www.youtube.com/playlist?list=OLAK5uy_neyxxOb6OQlTQBRXedyouomcY1aScvhVQ"}], "pls": [{"name": "Гріх EP / Hrikh EP", "videos": 4, "release": false, "created": "2017-08-16", "url": "https://www.youtube.com/playlist?list=PLsNpFJ_49s1qds8C4ZCjToO37sIwC0Arj", "views": 503862, "sample": 2}, {"name": "Live", "videos": 4, "release": false, "created": "2017-02-02", "url": "https://www.youtube.com/playlist?list=PLsNpFJ_49s1otK7m_0X8LMg1dl_8i3PmU", "views": 455872, "sample": 3}, {"name": "Кажани 1983", "videos": 1, "release": true, "created": "2025-10-09", "url": "https://www.youtube.com/playlist?list=OLAK5uy_neyxxOb6OQlTQBRXedyouomcY1aScvhVQ", "views": 35040, "sample": null}, {"name": "Тисяча Очей", "videos": 11, "release": true, "created": "2023-10-05", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lHAC-UUl7dq4fhBdU7S5RK10uG6wdyXJE", "views": 5933715, "sample": null}, {"name": "Мертві голоси", "videos": 9, "release": true, "created": "2018-12-12", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lRNDRXqkM-ZoVuvrk8jAdfTxYnlur3YnY", "views": 25277834, "sample": null}, {"name": "На іншому боці ріки", "videos": 4, "release": true, "created": "2025-05-21", "url": "https://www.youtube.com/playlist?list=OLAK5uy_mOfBsfeuqouodl8nvgEmQ0_YEhfrbOQcg", "views": 5175886, "sample": null}, {"name": "Гріх", "videos": 5, "release": true, "created": "2023-11-21", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kw7_qIWs2jSEgzmDMnFfe7HtrPmR3wG_I", "views": 1096625, "sample": null}, {"name": "Не довіряй смертним", "videos": 1, "release": true, "created": "2024-10-29", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kDCfQJ0dT3Y4MeHd-hN2EsCSJkOMLEt10", "views": 721747, "sample": null}, {"name": "Білим снігом", "videos": 1, "release": true, "created": "2023-02-22", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kbQvULq_9zT8-u55527jBaXHb4JwVUSxA", "views": 1470517, "sample": null}, {"name": "Диявол Входить У Місто", "videos": 1, "release": true, "created": "2022-11-30", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lp-HPRkkZkWh1BKKSQfcaHea0bbnoRmI4", "views": 323589, "sample": null}, {"name": "Госпел", "videos": 1, "release": true, "created": "2022-04-19", "url": "https://www.youtube.com/playlist?list=OLAK5uy_nRNes5qTyx2VQCXNcXRqi2nbK8e5VVpdw", "views": 296843, "sample": null}, {"name": "Янголе небесний", "videos": 1, "release": true, "created": "2021-10-12", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kdPYGpGTHPBNNwI6MGqfgZYWf51944uOg", "views": 330124, "sample": null}, {"name": "Дівча", "videos": 1, "release": true, "created": "2021-05-29", "url": "https://www.youtube.com/playlist?list=OLAK5uy_kTh8T8n4YDN5drotBb47BeetBZosg5BVc", "views": 337982, "sample": null}, {"name": "Na boloti", "videos": 1, "release": true, "created": "2017-12-19", "url": "https://www.youtube.com/playlist?list=OLAK5uy_lmSJKkFGp9Wpl8TsK81TDxHCC91qMxJUM", "views": 656978, "sample": null}], "vids": [{"id": "JavVTOm8UEw", "name": "На болоті", "date": "2017-07-17", "views": 656978, "kind": "rec", "note": "Official Audio", "cats": ["Country music", "Independent music", "Music", "Pop music"]}, {"id": "VGt4LKItp4s", "name": "Танцюй і пий", "date": "2017-08-16", "views": 446029, "kind": "rec", "note": "Official Audio", "cats": ["Country music", "Independent music", "Music"]}, {"id": "07AXr1d2mS8", "name": "Гріх", "date": "2017-08-16", "views": 57833, "kind": "rec", "note": "Official Audio", "cats": ["Country music", "Independent music", "Music"]}, {"id": "X2O5tRezEgU", "name": "Ти не Бог", "date": "2017-08-16", "views": 210934, "kind": "rec", "note": "Official Audio", "cats": ["Country music", "Independent music", "Music"]}, {"id": "KnSsmBpBdvM", "name": "Микола", "date": "2017-08-16", "views": 665995, "kind": "rec", "note": "Official Audio", "cats": ["Country music", "Independent music", "Music", "Pop music"]}, {"id": "sJI1KBoOGHs", "name": "Мексиканець", "date": "2017-11-18", "views": 389991, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Country music", "Independent music", "Music"]}, {"id": "qCg7eItfVSM", "name": "На болоті", "date": "2017-11-22", "views": 48345, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Country music", "Independent music", "Music"]}, {"id": "CpSEoH05TFE", "name": "Ти не Бог", "date": "2017-11-22", "views": 17536, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Independent music", "Music"]}, {"id": "GOSHyD4e2kE", "name": "Танцюй і пий", "date": "2017-12-01", "views": 41021, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Independent music", "Music", "Rock music"]}, {"id": "vjrzFvMuyG4", "name": "Павуки (cover King Dude)", "date": "2017-12-01", "views": 45050, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Independent music", "Music", "Rock music"]}, {"id": "lgnunQvx5-k", "name": "Човен", "date": "2017-12-01", "views": 109883, "kind": "live", "note": "Live · Halloween Horror Night 2017, Bingo", "cats": ["Electronic music", "Independent music", "Music"]}, {"id": "eP1BNFCLQZ0", "name": "Мертві голоси", "date": "2018-12-13", "views": 528982, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music", "Rock music"]}, {"id": "kOssw3pCTXo", "name": "Півні", "date": "2018-12-13", "views": 1148821, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music"]}, {"id": "kHm0yl_PbEc", "name": "Мої сестри — відьми", "date": "2018-12-13", "views": 979832, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music"]}, {"id": "yRVO6fh92OU", "name": "Мексиканець", "date": "2018-12-13", "views": 15768741, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music"]}, {"id": "qRHOOubXnLI", "name": "Микола", "date": "2018-12-13", "views": 1863692, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music"]}, {"id": "LZlGfBjfDrY", "name": "На болоті", "date": "2018-12-13", "views": 853032, "kind": "rec", "note": "Запис із релізу", "cats": ["Country music", "Independent music", "Music", "Rock music"]}, {"id": "ApH-OPjcufg", "name": "Човен", "date": "2019-01-29", "views": 2841805, "kind": "vid", "note": "Lyrics video", "cats": ["Country music", "Independent music", "Music", "Pop music"]}, {"id": "8L1-Nrm-Pqw", "name": "Джонні", "date": "2019-09-02", "views": 220655, "kind": "vid", "note": "Lyrics video", "cats": ["Independent music", "Music", "Pop music"]}, {"id": "eBIzxqwHg7A", "name": "Кажани (тизер)", "date": "2019-11-20", "views": 3583, "kind": "vid", "note": "Тизер", "cats": ["Music"]}, {"id": "HZYwV-y4OlI", "name": "Кажани", "date": "2020-02-14", "views": 462051, "kind": "vid", "note": "Відео", "cats": ["Country music", "Independent music", "Music", "Pop music"]}, {"id": "FYwtroulTeg", "name": "Дівча", "date": "2021-06-17", "views": 337982, "kind": "vid", "note": "Lyrics video", "cats": ["Independent music", "Music"]}, {"id": "eDNmgmwrXlc", "name": "Маленька церква (трибут Disco Elysium)", "date": "2021-08-31", "views": 38381, "kind": "vid", "note": "Відео", "cats": ["Independent music", "Music", "Pop music"]}, {"id": "Ub59pDJTpu0", "name": "Янголе небесний", "date": "2021-10-29", "views": 58906, "kind": "rec", "note": "Official Audio", "cats": ["Music", "Pop music"]}, {"id": "pIvVTkQfrK0", "name": "Янголе небесний", "date": "2022-01-21", "views": 330124, "kind": "vid", "note": "Official video", "cats": ["Music", "Pop music"]}, {"id": "Ujq3pNP0J-M", "name": "Госпел", "date": "2022-02-27", "views": 296843, "kind": "vid", "note": "Відео", "cats": ["Music"]}, {"id": "1B4AxahyQJQ", "name": "Диявол входить у місто", "date": "2022-10-31", "views": 323589, "kind": "rec", "note": "Official Audio", "cats": ["Music"]}, {"id": "0Q1hW9ufNZg", "name": "Білим снігом", "date": "2023-02-27", "views": 1470517, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "AuFxE7rePVA", "name": "Муншайн", "date": "2023-08-11", "views": 830878, "kind": "vid", "note": "Lyrics video", "cats": ["Country music", "Music", "Pop music"]}, {"id": "aes01FbEVMw", "name": "Трясовина", "date": "2023-10-12", "views": 2186719, "kind": "rec", "note": "Запис із релізу", "cats": ["Music", "Rock music"]}, {"id": "1zjlqjr0TvQ", "name": "Погана кров", "date": "2023-10-12", "views": 658187, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "6GWH2j-nwEk", "name": "Мати Темрява", "date": "2023-10-12", "views": 488967, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "Ej_QqhpWyfM", "name": "Ящірка", "date": "2023-10-12", "views": 176708, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "FoHQ5LdfcDM", "name": "Інтродукція. Кам’яна могила", "date": "2023-10-12", "views": 267074, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "B3ua2ysGIp0", "name": "Білим снігом", "date": "2023-10-12", "views": 353522, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "VtiaROx6_18", "name": "Диявол входить у місто", "date": "2023-10-12", "views": 468259, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "thgS-xotBrk", "name": "Белла", "date": "2023-10-12", "views": 369330, "kind": "rec", "note": "Запис із релізу", "cats": ["Music"]}, {"id": "yFqmPp22zxo", "name": "Танцюй і пий", "date": "2023-11-10", "views": 36152, "kind": "live", "note": "Live · Bel Etage, Київ, 21.04.2023", "cats": ["Independent music", "Music", "Pop music"]}, {"id": "H12Hinx05ro", "name": "Чорне дерево", "date": "2023-12-07", "views": 161174, "kind": "vid", "note": "Анімаційне відео", "cats": ["Music"]}, {"id": "Pr8N75sp584", "name": "Микола", "date": "2024-03-13", "views": 132015, "kind": "live", "note": "Live · Bel Etage, Київ, 21.04.2023", "cats": ["Country music", "Independent music", "Music", "Pop music"]}, {"id": "DYlnJuVRld0", "name": "Погана кров", "date": "2024-04-15", "views": 54485, "kind": "live", "note": "360° live · Atlas, Київ, 29.10.2023", "cats": ["Music", "Pop music"]}, {"id": "MkKR2aB-Xi8", "name": "Не довіряй смертним", "date": "2024-10-30", "views": 721747, "kind": "rec", "note": "Official Audio", "cats": ["Independent music", "Music"]}, {"id": "7OCnaLVGNaU", "name": "Золото і блакить", "date": "2024-11-18", "views": 955695, "kind": "vid", "note": "з Третьою штурмовою · проєкт «Епоха»", "cats": ["Music"]}, {"id": "r_Kg-S_Qin0", "name": "Потяг на південь", "date": "2025-05-29", "views": 3892458, "kind": "rec", "note": "Запис із релізу", "cats": ["Music", "Pop music"]}, {"id": "VRVVgpMTIz0", "name": "Червона ріка", "date": "2025-05-29", "views": 473155, "kind": "rec", "note": "Запис із релізу", "cats": ["Music", "Pop music"]}, {"id": "ADejqB0jpig", "name": "Чоловік у чорному", "date": "2025-05-29", "views": 528794, "kind": "rec", "note": "Запис із релізу", "cats": ["Music", "Pop music"]}, {"id": "to17zYCFFIU", "name": "Кажани 1983", "date": "2025-10-23", "views": 35040, "kind": "vid", "note": "Lyrics video", "cats": ["Music", "Pop music"]}, {"id": "CQBKLsZrfys", "name": "Ніч упаде", "date": "2026-03-27", "views": 281479, "kind": "vid", "note": "Official video", "cats": ["Music", "Pop music"]}], "total": 43288969};</script>
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in (a||{}))e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const nf=new Intl.NumberFormat("uk-UA");
+const f1=(x,d=1)=>x.toFixed(d).replace(".",",");
+const compact=v=>v>=1e6?f1(v/1e6)+" млн":v>=1e3?Math.round(v/1e3)+" тис.":String(Math.round(v));
+const pl=(n,f)=>{const a=n%10,b=n%100;return f[(a===1&&b!==11)?0:(a>=2&&a<=4&&(b<10||b>=20))?1:2]};
+const fdate=d=>new Date(d+"T00:00:00Z").toLocaleDateString("uk-UA",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"});
+const fd=d=>fdate(d).replace(/ р\.$/," року");
+const fmonY=d=>new Date(d+"T00:00:00Z").toLocaleDateString("uk-UA",{month:"long",year:"numeric",timeZone:"UTC"});
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const touch=matchMedia("(hover: none)").matches;
+const T=DATA.tracks,RELS=DATA.rels,PLS=DATA.pls,VID=DATA.vids,TOTAL=DATA.total;
+const byDate=(a,b)=>a.date<b.date?-1:a.date>b.date?1:0;
+
+/* ---------- підказка ---------- */
+const tip=$("tip");let tipOwner=null;
+const tipHTML=o=>{let h='<div class="tn">'+o.title+'</div>';if(o.sub)h+='<div class="tk">'+o.sub+'</div>';
+  o.rows.forEach(r=>{h+='<div class="trw"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>'});if(o.hint)h+='<div class="th">'+o.hint+'</div>';return h};
+function placeTip(x,y){const w=tip.offsetWidth,h=tip.offsetHeight,m=12;let l=x+18,t=y+18;
+  if(l+w>innerWidth-m)l=x-w-18;if(l<m)l=m;if(t+h>innerHeight-m)t=y-h-18;if(t<m)t=m;
+  tip.style.transform="translate("+Math.round(l)+"px,"+Math.round(t)+"px)"}
+function showTip(o,x,y){tip.innerHTML=tipHTML(o);tip.hidden=false;placeTip(x,y)}
+function hideTip(){tip.hidden=true;tipOwner=null}
+function bind(node,getInfo,onOn,onOff){
+  const on=(x,y)=>{onOn&&onOn();showTip(getInfo(),x,y)};
+  node.addEventListener("pointerenter",e=>{if(e.pointerType==="touch")return;tipOwner=node;on(e.clientX,e.clientY)});
+  node.addEventListener("pointermove",e=>{if(tipOwner===node&&!tip.hidden)placeTip(e.clientX,e.clientY)});
+  node.addEventListener("pointerleave",()=>{onOff&&onOff();hideTip()});
+  node.addEventListener("focus",()=>{const r=node.getBoundingClientRect();tipOwner=node;on(r.left+r.width/2,r.top+r.height/2)});
+  node.addEventListener("blur",()=>{onOff&&onOff();hideTip()});
+  const isA=node.tagName.toLowerCase()==="a";
+  if(touch)node.addEventListener("click",e=>{
+    if(tipOwner!==node){if(isA)e.preventDefault();const r=node.getBoundingClientRect();tipOwner=node;on(r.left+r.width/2,r.top+r.height/2)}});
+}
+const link=(p,href,cls,extra)=>el("a",Object.assign({href:href,target:"_blank",rel:"noopener",class:cls},extra||{}),p);
+const yt=id=>"https://www.youtube.com/watch?v="+id;
+const hintYT=touch?"Торкніться ще раз — відкрити на YouTube":"Клік — відкрити на YouTube";
+const hintPL=touch?"Торкніться ще раз — відкрити плейлист":"Клік — відкрити плейлист";
+
+/* ====================== 1. ОРГАН ====================== */
+(function(){
+  const svg=$("organ"),W=1240,BASE=610,PW=21,PG=4,PAD=9,GG=28;
+  const albums=RELS.filter(r=>r.tracks>1).sort(byDate);
+  const singles=RELS.filter(r=>r.tracks===1).sort(byDate);
+  const groups=albums.map(r=>({name:r.name,rel:r,album:true,tr:T.filter(t=>t.rel===r.name).sort((a,b)=>a.no-b.no)}));
+  groups.push({name:"Сингли",album:false,tr:singles.map(r=>T.find(t=>t.rel===r.name))});
+  groups.forEach(g=>{g.total=sum(g.tr,t=>t.views);g.w=g.tr.length*PW+(g.tr.length-1)*PG+2*PAD;g.hot=g.tr.reduce((a,b)=>b.views>a.views?b:a)});
+  const vmax=Math.max(...T.map(t=>t.views));
+  const hOf=v=>44+320*Math.sqrt(v/vmax);
+  const total=sum(groups,g=>g.w)+GG*(groups.length-1);
+  let x=(W-total)/2;
+  const pipes=[];
+  /* виступ */
+  el("rect",{x:22,y:BASE,width:W-44,height:20,fill:"url(#ledgeG)",stroke:"#43503f","stroke-width":1.2,filter:"url(#rough)"},svg);
+  el("line",{x1:22,x2:W-22,y1:BASE+.5,y2:BASE+.5,stroke:"rgba(221,213,191,.3)"},svg);
+  groups.forEach(g=>{
+    const maxH=hOf(Math.max(...g.tr.map(t=>t.views))),ys=BASE-maxH-26,ah=g.w*.55;
+    const arch=(i)=>"M"+(x+i)+","+BASE+" V"+ys+" Q"+(x+i+g.w*.06)+","+(ys-ah*.55)+" "+(x+g.w/2)+","+(ys-ah+i*.6)+" Q"+(x+g.w-i-g.w*.06)+","+(ys-ah*.55)+" "+(x+g.w-i)+","+ys+" V"+BASE;
+    el("path",{d:arch(0),fill:"rgba(221,213,191,.02)",stroke:"rgba(221,213,191,.26)","stroke-width":1.3},svg);
+    el("path",{d:arch(6),fill:"none",stroke:"rgba(221,213,191,.1)"},svg);
+    g.tr.forEach((t,i)=>{
+      const h=hOf(t.views),px=x+PAD+i*(PW+PG),hot=t===g.hot;
+      const a=link(svg,yt(t.id),"pipe",{"aria-label":t.name+", "+g.name+", "+compact(t.views)+" переглядів"});
+      el("rect",{x:px,y:BASE-h,width:PW,height:h,fill:hot?"url(#pipeHot)":"url(#pipeG)",stroke:"#070908","stroke-width":1.2},a);
+      el("ellipse",{cx:px+PW/2,cy:BASE-h,rx:PW/2,ry:3.6,fill:"#0a0e0c",stroke:"rgba(221,213,191,.5)","stroke-width":1},a);
+      const my=BASE-Math.min(34,h*.4);
+      el("rect",{x:px+3.5,y:my,width:PW-7,height:9,rx:2,fill:"#0a0e0c"},a);
+      el("line",{x1:px+2,x2:px+PW-2,y1:my-.5,y2:my-.5,stroke:"rgba(255,255,255,.35)"},a);
+      el("rect",{x:px-3,y:BASE-h-8,width:PW+6,height:h+12,fill:"transparent"},a);
+      pipes.push({a:a,x:px});
+      if(g.album){const n=el("text",{class:"pn",x:px+PW/2,y:BASE+40},svg);n.textContent=t.no}
+      bind(a,()=>({title:t.name,sub:g.name+", "+(t.inch?"окреме відео каналу":"трек лише в релізі"),
+        rows:[(g.album?["номер у релізі",t.no]:null),["переглядів",nf.format(t.views)],["лайків",nf.format(t.likes)],["коментарів",nf.format(t.comments)],
+          (g.album?["частка релізу",Math.round(t.views/g.total*100)+" %"]:null),["відео опубліковано",fdate(t.date)]].filter(Boolean),hint:hintYT}),
+        ()=>{a.classList.add("on");svg.classList.add("dimP")},()=>{a.classList.remove("on");svg.classList.remove("dimP")});
+    });
+    /* підпис над найпопулярнішою трубою */
+    const hi=g.tr.indexOf(g.hot),hx=x+PAD+hi*(PW+PG)+PW/2,hy=BASE-hOf(g.hot.views);
+    const hg=el("g",{class:"hl"},svg);
+    const l1=el("text",{class:"hl1",x:hx,y:hy-16},hg);l1.textContent=g.hot.name;
+    if(g.album){const l2=el("text",{class:"hl2",x:hx,y:hy-38},hg);l2.textContent=Math.round(g.hot.views/g.total*100)+" %"}
+    /* підпис групи */
+    const words=g.name.split(" ");let ln=[g.name];
+    if(g.name.length>11&&words.length>1){const m=Math.ceil(words.length/2);ln=[words.slice(0,m).join(" "),words.slice(m).join(" ")]}
+    ln.forEach((s,k)=>{const t=el("text",{class:"gn",x:x+g.w/2,y:BASE+72+k*26},svg);t.textContent=s});
+    const sub=el("text",{class:"gs",x:x+g.w/2,y:BASE+72+ln.length*26+4},svg);
+    sub.textContent=g.album?g.rel.date.slice(0,4)+" р., "+compact(g.total):singles.length+" "+pl(singles.length,["сингл","сингли","синглів"])+", "+compact(g.total);
+    g.x=x;x+=g.w+GG;
+  });
+  svg.setAttribute("viewBox","0 0 1240 "+(BASE+160));
+
+  /* текст */
+  const al=groups.filter(g=>g.album).map(g=>({g,share:g.hot.views/g.total}));
+  const top=al.reduce((a,b)=>b.share>a.share?b:a),even=al.reduce((a,b)=>b.share<a.share?b:a);
+  $("orgStat").innerHTML="У «<b>"+top.g.name+"</b>» одна труба звучить за весь альбом: «"+top.g.hot.name+"» дає <b>"+Math.round(top.share*100)+" %</b> переглядів релізу з "+top.g.tr.length+" "+pl(top.g.tr.length,["треку","треків","треків"])+". Найрівніший — «<b>"+even.g.name+"</b>»: там найгучніший трек має лише "+Math.round(even.share*100)+" %.";
+
+  /* вступ: труби підіймаються зліва направо */
+  if(!reduce){
+    svg.classList.add("pre");
+    pipes.forEach((p,i)=>p.a.style.transitionDelay=(i*36)+"ms,0s,0s,0s");
+    const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();requestAnimationFrame(()=>requestAnimationFrame(()=>svg.classList.remove("pre")));
+      setTimeout(()=>pipes.forEach(p=>p.a.style.transitionDelay=""),pipes.length*36+1500)}},{threshold:.3});
+    io.observe(svg);
+  }
+})();
+
+/* ====================== 2. НИТКИ ====================== */
+(function(){
+  const svg=$("threads"),W=1240,ML=300,MR=60,TOP=44,RH=46;
+  const t0=Date.UTC(2017,4,15),t1=Date.UTC(2026,5,15);
+  const X=d=>ML+(Date.parse(d)-t0)/(t1-t0)*(W-ML-MR);
+  const rows=[...RELS].sort(byDate);
+  svg.setAttribute("viewBox","0 0 1240 "+(TOP+rows.length*RH+24));
+  const ax=el("g",{class:"axis"},svg);
+  for(let y=2018;y<=2026;y++){const x=X(y+"-01-01");el("line",{x1:x,x2:x,y1:TOP-14,y2:TOP+rows.length*RH},ax);
+    const t=el("text",{x:x+7,y:TOP-20},ax);t.textContent=y}
+  let before=0,best=null;
+  rows.forEach((r,i)=>{
+    const cy=TOP+i*RH+RH/2,xr=X(r.date);
+    const tr=T.filter(t=>t.rel===r.name);
+    const hit=el("rect",{class:"rowhit",x:0,y:cy-RH/2,width:W,height:RH,fill:"transparent"},svg);
+    const lb=el("text",{class:"rl",x:ML-20,y:cy+6},svg);lb.textContent=r.name;
+    el("line",{x1:ML,x2:W-MR,y1:cy,y2:cy,stroke:"rgba(221,213,191,.07)"},svg);
+    bind(hit,()=>({title:r.name,sub:r.tracks>1?"Альбом або EP, "+r.tracks+" "+pl(r.tracks,["трек","треки","треків"]):"Сингл",
+      rows:[["переглядів",nf.format(r.views)],["реліз",fdate(r.date)]]}),()=>hit.classList.add("on"),()=>hit.classList.remove("on"));
+    /* групи точок */
+    const gr={};
+    tr.forEach(t=>{const k=t.date+(t.inch?"v":"r");(gr[k]=gr[k]||{date:t.date,inch:t.inch,list:[]}).list.push(t);
+      const gap=Math.round((Date.parse(r.date)-Date.parse(t.date))/864e5);
+      if(gap>30){before++;if(!best||gap>best.gap)best={gap,t,r}}});
+    const dots=Object.values(gr);
+    dots.forEach(d=>{const xd=X(d.date);if(Math.abs(xd-xr)<2)return;
+      el("line",{x1:xd,x2:xr,y1:cy,y2:cy,stroke:xd<xr?"#d4533f":"rgba(221,213,191,.5)","stroke-width":1.6,"stroke-dasharray":xd<xr?"5 5":"none","pointer-events":"none"},svg)});
+    el("path",{d:"M"+xr+","+(cy-11)+" V"+(cy+12)+" M"+(xr-7)+","+(cy-3)+" H"+(xr+7),fill:"none",stroke:"#d4533f","stroke-width":2.4,"stroke-linecap":"round","pointer-events":"none"},svg);
+    dots.sort((a,b)=>b.list.length-a.list.length).forEach(d=>{
+      const xd=X(d.date),n=d.list.length,rr=n>1?9.5:6;
+      const g=el("g",{class:"dot",tabindex:0,role:"img","aria-label":r.name+": "+n+" "+pl(n,["трек","треки","треків"])+", "+fdate(d.date)},svg);
+      el("circle",{cx:xd,cy:cy,r:rr,fill:"url(#"+(d.inch?"g-vid":"g-rec")+")",stroke:"#070908","stroke-width":1.6},g);
+      if(n>1){const tx=el("text",{class:"dn",x:xd,y:cy+4.5},g);tx.textContent=n}
+      bind(g,()=>({title:fdate(d.date),sub:r.name+", "+(d.inch?"окремі відео каналу":"треки лише в релізі"),
+        rows:d.list.slice(0,12).map(t=>[t.name,compact(t.views)])}),()=>g.classList.add("on"),()=>g.classList.remove("on"));
+    });
+  });
+  const yrs=Math.round(best.gap/365.25);
+  $("thrP").innerHTML="У "+before+" із "+T.length+" записів треклістів відео вийшло щонайменше за місяць до релізу: пісня жила на каналі, поки реліз ще не існував. Найдовше чекала «<b>"+best.t.name+"</b>»: її відео вийшло "+fd(best.t.date)+", а реліз «"+best.r.name+"» з’явився "+fd(best.r.date)+", тобто через <b>"+yrs+" "+pl(yrs,["рік","роки","років"])+"</b>.";
+})();
+
+/* ====================== 3. ЧОТКИ ====================== */
+(function(){
+  const svg=$("beads"),W=1240,ML=210,MR=230,TOP=84,RH=56;
+  const vids=[...VID].sort(byDate),N=vids.length;
+  const tags=[["Country music","Кантрі"],["Independent music","Інді"],["Pop music","Поп"],["Rock music","Рок"],["Electronic music","Електроніка"]];
+  const step=(W-ML-MR)/(N-1),X=i=>ML+i*step;
+  const has=(v,t)=>v.cats.indexOf(t)>-1;
+  const uk=Object.fromEntries(tags);
+  /* роки */
+  const yr={};vids.forEach((v,i)=>{const y=v.date.slice(0,4);if(!(y in yr))yr[y]=i});
+  const BOT=TOP+tags.length*RH-6;
+  let prevX=-99,row=0;
+  Object.keys(yr).forEach(y=>{const x=X(yr[y])-step/2;
+    el("line",{x1:x,x2:x,y1:TOP-22,y2:BOT+10,stroke:"rgba(221,213,191,.09)"},svg);
+    row=(x-prevX<46)?(row?0:1):0;prevX=x;
+    const t=el("text",{x:x+6,y:BOT+32+row*20,style:"font:400 15px var(--text);fill:var(--ash)"},svg);t.textContent=y});
+  /* стовпці наведення */
+  vids.forEach((v,i)=>{
+    const c=el("rect",{class:"col",x:X(i)-step/2,y:TOP-22,width:step,height:BOT-TOP+32,fill:"transparent"},svg);
+    bind(c,()=>({title:v.name,sub:v.note||"",rows:[["опубліковано",fdate(v.date)],["переглядів",nf.format(v.views)],
+      ["ярлики",tags.filter(t=>has(v,t[0])).map(t=>t[1]).join(", ")||"лише «Музика»"]]}),()=>c.classList.add("on"),()=>c.classList.remove("on"));
+  });
+  tags.forEach((tg,k)=>{
+    const cy=TOP+k*RH,list=vids.filter(v=>has(v,tg[0])),share=sum(list,v=>v.views)/TOTAL;
+    el("line",{x1:ML-14,x2:W-MR+14,y1:cy,y2:cy,stroke:"rgba(221,213,191,.35)","stroke-width":1.2,"pointer-events":"none"},svg);
+    const lb=el("text",{class:"tl",x:ML-30,y:cy+6},svg);lb.textContent=tg[1];
+    const rt=el("text",{class:"tr",x:W-MR+34,y:cy+5},svg);rt.textContent=list.length+" відео, "+(share<.005?"менше 1":Math.round(share*100))+" % переглядів";
+    vids.forEach((v,i)=>{
+      if(has(v,tg[0]))el("circle",{cx:X(i),cy:cy,r:Math.min(7.6,step*.4),fill:"url(#pearl)",stroke:"#070908","stroke-width":1.4,"pointer-events":"none"},svg);
+      else el("circle",{cx:X(i),cy:cy,r:1.8,fill:"rgba(221,213,191,.3)","pointer-events":"none"},svg);
+    });
+  });
+  /* підпис останнього кантрі */
+  let lastC=-1;vids.forEach((v,i)=>{if(has(v,"Country music"))lastC=i});
+  const lc=vids[lastC];
+  el("line",{x1:X(lastC),x2:X(lastC),y1:TOP-8,y2:TOP-30,stroke:"#d4533f","stroke-width":1.2,"pointer-events":"none"},svg);
+  const an=el("text",{class:"bn",x:X(lastC)+7,y:TOP-34,"text-anchor":"start"},svg);an.textContent="останнє «Кантрі»: "+lc.name.replace(/\s*\(.*\)/,"")+", "+fmonY(lc.date).replace(/ р\.$/,"");
+
+  /* текст */
+  let lastCI=-1;vids.forEach((v,i)=>{if(has(v,"Country music")||has(v,"Independent music"))lastCI=i});
+  const after=vids.slice(lastCI+1),pop=after.filter(v=>has(v,"Pop music")).length,lv=vids[lastCI];
+  const cShare=Math.round(sum(vids.filter(v=>has(v,"Country music")),v=>v.views)/TOTAL*100);
+  $("beadP").innerHTML="Кожна нитка — ярлик, кожна намистина — відео за датою. Ярлик «Кантрі» мають "+vids.filter(v=>has(v,"Country music")).length+" відео, а разом вони дають <b>"+cShare+" %</b> переглядів каналу. Після «"+lv.name.replace(/\s*\(.*\)/,"")+"» ("+fd(lv.date)+") вийшло "+after.length+" "+pl(after.length,["відео","відео","відео"])+": жодне не отримало ні «Кантрі», ні «Інді», а <b>"+pop+" з "+after.length+"</b> отримали «Поп».";
+})();
+
+/* ====================== 4. БІБЛІОТЕКА ====================== */
+(function(){
+  const svg=$("library"),W=1240,BASE=440,GAP=14;
+  const pls=[...PLS].sort((a,b)=>a.created<b.created?-1:1);
+  const wOf=p=>38+9*p.videos,vmax=Math.max(...pls.map(p=>p.views));
+  const hOf=p=>252+150*Math.sqrt(p.views/vmax);
+  const total=sum(pls,wOf)+GAP*(pls.length-1);
+  let x=(W-total)/2;
+  el("rect",{x:x-26,y:BASE,width:total+52,height:18,fill:"url(#ledgeG)",stroke:"#43503f","stroke-width":1.2,filter:"url(#rough)"},svg);
+  el("line",{x1:x-26,x2:x+total+26,y1:BASE+.5,y2:BASE+.5,stroke:"rgba(221,213,191,.3)"},svg);
+  pls.forEach(p=>{
+    const w=wOf(p),h=hOf(p),top=BASE-h;
+    const a=link(svg,p.url,"book",{"aria-label":p.name+", "+(p.release?"реліз":"плейлист каналу")+", "+p.videos+" відео"});
+    el("rect",{x:x,y:top,width:w,height:h,rx:3,fill:p.release?"url(#leatherR)":"url(#leatherM)",stroke:"#070908","stroke-width":1.6},a);
+    [14,20].forEach(d=>el("line",{x1:x+3,x2:x+w-3,y1:top+d,y2:top+d,stroke:"#c19a45","stroke-width":d===14?2:1,opacity:.75},a));
+    [26,20].forEach((d,k)=>el("line",{x1:x+3,x2:x+w-3,y1:BASE-d,y2:BASE-d,stroke:"#c19a45","stroke-width":k?1:2,opacity:.75},a));
+    el("line",{x1:x+4,x2:x+4,y1:top+4,y2:BASE-3,stroke:"rgba(255,255,255,.1)"},a);
+    el("circle",{cx:x+w/2,cy:top+46,r:12.5,fill:"rgba(0,0,0,.35)",stroke:"#c19a45","stroke-width":1.3},a);
+    const c=el("text",{class:"bc",x:x+w/2,y:top+51},a);c.textContent=p.videos;
+    const t=el("text",{class:"bt",transform:"translate("+(x+w/2+5)+","+(BASE-36)+") rotate(-90)"},a);t.textContent=p.name;
+    const yy=el("text",{class:"by",x:x+w/2,y:BASE+40},svg);yy.textContent=p.created.slice(0,4);
+    bind(a,()=>({title:p.name,sub:p.release?"Реліз":"Плейлист каналу",
+      rows:[["відео",p.release?p.videos:p.videos+" (у вибірці "+p.sample+")"],["переглядів",nf.format(p.views)],["створено",fdate(p.created)]],hint:hintPL}),
+      ()=>{a.classList.add("on");svg.classList.add("dimL")},()=>{a.classList.remove("on");svg.classList.remove("dimL")});
+    x+=w+GAP;
+  });
+  svg.setAttribute("viewBox","0 0 1240 "+(BASE+70));
+  /* текст */
+  const own=PLS.filter(p=>!p.release),rel=PLS.filter(p=>p.release);
+  const firstRel=rel.reduce((a,b)=>b.created<a.created?b:a);
+  const older=own.filter(o=>o.created<firstRel.created);
+  let pair=null;own.forEach(o=>rel.forEach(r=>{if(o.name.indexOf(r.name)===0)pair={o,r}}));
+  let s=PLS.length+" плейлистів: "+rel.length+" "+pl(rel.length,["реліз","релізи","релізів"])+" і "+own.length+" "+pl(own.length,["плейлист","плейлисти","плейлистів"])+" каналу. ";
+  if(older.length===own.length)s+="Обидва плейлисти каналу — «"+own.map(o=>o.name.split(" / ")[0]).join("» і «")+"» — старші за будь-який реліз: перший реліз з’явився "+fd(firstRel.created)+". ";
+  if(pair){const yrs=Math.round((Date.parse(pair.r.created)-Date.parse(pair.o.created))/864e5/365.25);
+    s+="Плейлист «"+pair.o.name.split(" / ")[0]+"» створено "+fd(pair.o.created)+", а однойменний реліз з’явився лише "+fd(pair.r.created)+", тобто через <b>"+yrs+" "+pl(yrs,["рік","роки","років"])+"</b>.";}
+  $("libP").innerHTML=s;
+})();
+})();
+</script>
+</body>
+</html>
