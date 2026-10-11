@@ -31,7 +31,7 @@ from openpyxl.utils import get_column_letter
 load_dotenv()
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
 CHANNEL_ID = "UCio0I8HBJ7rWc7tk17rYqHw"
-OUTPUT_FILE = "tsvyntar_youtube.xlsx"
+OUTPUT_FILE = "zwyntar_youtube.xlsx"
 
 # True - у списку пісень залишити лише відео з музичною тематикою
 ONLY_MUSIC = False
