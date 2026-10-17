@@ -3,13 +3,24 @@
 <head>
   <meta charset="utf-8">
   <style>
-    html, body { margin:0; height:100%; background:#000; }
-    iframe { width:100%; height:100%; border:0; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
 </head>
 <body>
   <iframe
     src="https://www.youtube.com/embed/videoseries?list=UUio0I8HBJ7rWc7tk17rYqHw&rel=0"
+    scrolling="no"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
     referrerpolicy="strict-origin-when-cross-origin"
     allowfullscreen>
