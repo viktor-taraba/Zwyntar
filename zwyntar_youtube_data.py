@@ -58,6 +58,7 @@ RELEASE_PLAYLIST_IDS = [
     "OLAK5uy_kdPYGpGTHPBNNwI6MGqfgZYWf51944uOg",
     "OLAK5uy_kTh8T8n4YDN5drotBb47BeetBZosg5BVc",
     "OLAK5uy_lmSJKkFGp9Wpl8TsK81TDxHCC91qMxJUM",
+    "OLAK5uy_lmSm1P-y1NK_Jv0wV2eP8SPjDbftu0rJo"
 ]
 
 BASE_URL = "https://www.googleapis.com/youtube/v3"
